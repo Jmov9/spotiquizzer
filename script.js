@@ -1,4 +1,4 @@
-const clientId = 'SU8d09b924c2e74ef9acbe22be2ba8df57'; // Vaihda tähän oma Spotify client ID
+const clientId = '8d09b924c2e74ef9acbe22be2ba8df57'; // Vaihda tähän oma Spotify client ID
 const redirectUri = 'https://jmov9.github.io/spotiquizzer/';
 
 const scopes = ['user-read-private']; // Ei tarvita juuri muuta nyt
