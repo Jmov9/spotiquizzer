@@ -2,20 +2,14 @@
 <html lang="fi">
 <head>
   <meta charset="UTF-8">
-  <title>SpotiQuizzer Game</title>
+  <title>SpotiQuizzer</title>
 </head>
 <body>
-  <h1>Tervetuloa peliin!</h1>
-  <p id="status">Haetaan access tokenia...</p>
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('access_token');
-    if (token) {
-      document.getElementById('status').innerText = "Access token haettu! 🎉";
-      // TODO: tänne jatkossa API-hakuja
-    } else {
-      document.getElementById('status').innerText = "Tokenia ei löytynyt 😢";
-    }
-  </script>
+  <h1>🎵 Mikä kappale soi?</h1>
+  <audio id="audioPlayer" controls autoplay></audio>
+  <div id="options"></div>
+  <p id="result"></p>
+
+  <script src="game.js"></script>
 </body>
 </html>
