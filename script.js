@@ -1,24 +1,20 @@
-const clientId = '8d09b924c2e74ef9acbe22be2ba8df57'; // Vaihda tähän oma Spotify client ID
-const redirectUri = 'https://jmov9.github.io/spotiquizzer/';
+// ============================
+// SpotiQuizzerin login-koodi
+// ============================
 
-const scopes = ['user-read-private']; // Ei tarvita juuri muuta nyt
+// Tämä tiedosto hoitaa kirjautumisnapin toiminnan.
+// Se EI enää käytä vanhaa token-flow'ta, vaan ohjaa backendille.
+// Backend hoitaa Spotify-loginin ja ohjaa takaisin peliin (game.html?access_token=...)
 
-document.getElementById('loginBtn').addEventListener('click', () => {
-  const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scopes.join('%20')}`;
-  window.location.href = authUrl;
+document.addEventListener('DOMContentLoaded', () => {
+  const loginBtn = document.getElementById('loginBtn');
+
+  if (loginBtn) {
+    loginBtn.addEventListener('click', () => {
+      // HUOM: Tämä osoite on sun backend, joka pyörii lokaalisti
+      // Jos käytät julkista serveriä joskus, muuta tämä silloin
+      window.location.href = 'http://127.0.0.1:8888/login';
+    });
+  }
 });
 
-// Kun palataan takaisin redirectissä, napataan access_token URLista
-window.onload = () => {
-  const hash = window.location.hash;
-  if (hash) {
-    const params = new URLSearchParams(hash.substring(1));
-    const token = params.get('access_token');
-    if (token) {
-      localStorage.setItem('spotify_token', token);
-      alert('Kirjautuminen onnistui!');
-      // Siirrytään peliin – voit vaikka ohjata peli.html-tiedostoon tms.
-      // window.location.href = "game.html";
-    }
-  }
-};
