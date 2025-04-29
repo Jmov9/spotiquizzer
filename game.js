@@ -9,24 +9,22 @@ const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-// Haetaan satunnainen kappale Spotifysta (hakusana: "a", yleinen kirjain)
-fetch('https://api.spotify.com/v1/search?q=a&type=track&limit=30', {
+// 🔁 Satunnainen kirjain a–z
+const randomLetter = String.fromCharCode(97 + Math.floor(Math.random() * 26));
+
+fetch(`https://api.spotify.com/v1/search?q=${randomLetter}&type=track&limit=50`, {
   headers: {
     Authorization: 'Bearer ' + accessToken,
   },
 })
   .then(res => res.json())
   .then(data => {
-    const tracks = data.tracks.items.filter(track => track.preview_url); // Vain biisit joilla on esikuuntelu
-    if (tracks.length < 4) {
-      result.innerText = "⚠️ Ei tarpeeksi kappaleita ladattavaksi. Lataa sivu uudelleen.";
-      return;
-    }
+    const tracks = data.tracks.items.filter(track => track.preview_url); // Vain biisit joilla on preview
+    if (tracks.length < 4) throw new Error("Ei tarpeeksi esikuunneltavia kappaleita");
 
     const correct = tracks[Math.floor(Math.random() * tracks.length)];
-    const wrongChoices = tracks.filter(t => t.id !== correct.id);
-    const randomWrong = shuffle(wrongChoices).slice(0, 3);
-    const choices = shuffle([correct, ...randomWrong]);
+    const choices = shuffle([...tracks].slice(0, 4));
+    if (!choices.includes(correct)) choices[Math.floor(Math.random() * 4)] = correct;
 
     audio.src = correct.preview_url;
 
@@ -44,8 +42,8 @@ fetch('https://api.spotify.com/v1/search?q=a&type=track&limit=30', {
     });
   })
   .catch(err => {
-    console.error("Virhe:", err);
-    result.innerText = "⚠️ Virhe haettaessa kappaletta.";
+    console.error(err);
+    result.innerText = "⚠️ Ei tarpeeksi kappaleita ladattavaksi. Lataa sivu uudelleen.";
   });
 
 function shuffle(arr) {
