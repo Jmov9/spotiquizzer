@@ -1,7 +1,7 @@
 const accessToken = new URLSearchParams(window.location.search).get('access_token');
 
 if (!accessToken) {
-  document.body.innerHTML = "<h2>Token puuttuu! 😢</h2>";
+  document.body.innerHTML = "<h2>Token puuttuu! </h2>";
   throw new Error("Access token not found");
 }
 
@@ -9,40 +9,31 @@ const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-const searchTerms = ['love', 'rock', 'live', 'moment', 'hit', 'music', 'dance', 'night', 'summer', 'happy', 'dream', 'party'];
-
-function getRandomSearchTerm() {
-  return searchTerms[Math.floor(Math.random() * searchTerms.length)];
-}
+const playlistId = '0bIUgov7PqxNuASp4dQGYU';
 
 function shuffle(arr) {
   return arr.sort(() => Math.random() - 0.5);
 }
 
-function fetchSongs(attempt = 1) {
-  const searchQuery = getRandomSearchTerm();
-  console.log(`🔁 Yritys ${attempt}: haetaan hakusanalla "${searchQuery}"`);
-
-  fetch(`https://api.spotify.com/v1/search?q=${searchQuery}&type=track&limit=50`, {
+function fetchFromPlaylist() {
+  fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=100`, {
     headers: {
       Authorization: 'Bearer ' + accessToken,
     },
   })
     .then(res => res.json())
     .then(data => {
-      console.log("📦 API-haun tulos:", data);
+      console.log("🎧 Soittolistan tulos:", data);
 
-      const tracks = data.tracks.items.filter(track => track.preview_url);
-      console.log(`🎵 Esikuuntelullisia kappaleita löytyi: ${tracks.length}`);
+      const tracks = data.items
+        .map(item => item.track)
+        .filter(track => track && track.preview_url);
+
+      console.log(`🎵 Soittokelpoisia: ${tracks.length}`);
 
       if (tracks.length < 4) {
-        if (attempt < 5) {
-          console.warn("⚠️ Liian vähän biisejä, yritetään uudestaan...");
-          return fetchSongs(attempt + 1);
-        } else {
-          result.innerText = "⚠️ Ei löytynyt tarpeeksi esikuunneltavia kappaleita. Yritä ladata sivu uudelleen.";
-          return;
-        }
+        result.innerText = "⚠️ Ei tarpeeksi esikuunneltavia kappaleita.";
+        return;
       }
 
       const correct = tracks[Math.floor(Math.random() * tracks.length)];
@@ -66,10 +57,10 @@ function fetchSongs(attempt = 1) {
       });
     })
     .catch(err => {
-      console.error("❌ Virhe haettaessa kappaleita:", err);
-      result.innerText = "⚠️ Tapahtui virhe. Yritä ladata sivu uudelleen.";
+      console.error("❌ API-virhe:", err);
+      result.innerText = "⚠️ Tapahtui virhe. Yritä uudelleen.";
     });
 }
 
-// 🎬 Käynnistä peli
-fetchSongs();
+//  Käynnistä
+fetchFromPlaylist();
