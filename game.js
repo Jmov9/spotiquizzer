@@ -10,7 +10,7 @@ const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
 // 🎵 Satunnaiset hakusanat
-const searchTerms = ['love', 'rock', 'live', 'hit', 'music', 'dance', 'night', 'summer', 'happy', 'dream', 'party'];
+const searchTerms = ['love', 'rock', 'live', 'hit', 'a', 'music', 'dance', 'night', 'summer', 'happy', 'dream', 'party'];
 const searchQuery = searchTerms[Math.floor(Math.random() * searchTerms.length)];
 
 console.log("🔎 Haetaan biisejä hakusanalla:", searchQuery);
