@@ -9,7 +9,7 @@ const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-// 🎯 Satunnaisia yleisiä hakusanoja (parempia osumia)
+// Hakusanojen lista, käytetään satunnaista
 const searchTerms = ['love', 'rock', 'live', 'hit', 'music', 'dance', 'night', 'a', 'b', 'c'];
 const searchQuery = searchTerms[Math.floor(Math.random() * searchTerms.length)];
 
@@ -20,14 +20,16 @@ fetch(`https://api.spotify.com/v1/search?q=${searchQuery}&type=track&limit=50`, 
 })
   .then(res => res.json())
   .then(data => {
-    const tracks = data.tracks.items.filter(track => track.preview_url); // Vain biisit joilla on preview
+    const tracks = data.tracks.items.filter(track => track.preview_url);
+
     if (tracks.length < 4) {
-      console.warn("Ei tarpeeksi esikuunneltavia kappaleita, ladataan uudelleen...");
-      location.reload(); // 🔁 Kokeillaan uudestaan
+      result.innerText = "⚠️ Ei tarpeeksi esikuunneltavia kappaleita. Lataa sivu uudelleen.";
       return;
     }
 
     const correct = tracks[Math.floor(Math.random() * tracks.length)];
+    console.log("Testaa preview:", correct.preview_url); // 👈 Tämä näkyy konsolissa
+
     const choices = shuffle([...tracks].slice(0, 4));
     if (!choices.includes(correct)) choices[Math.floor(Math.random() * 4)] = correct;
 
@@ -48,7 +50,7 @@ fetch(`https://api.spotify.com/v1/search?q=${searchQuery}&type=track&limit=50`, 
   })
   .catch(err => {
     console.error(err);
-    result.innerText = "⚠️ Tapahtui virhe. Yritä ladata sivu uudelleen.";
+    result.innerText = "⚠️ Tapahtui virhe haettaessa kappaleita.";
   });
 
 function shuffle(arr) {
