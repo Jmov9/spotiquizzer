@@ -9,26 +9,30 @@ const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-// Haetaan satunnainen kappale Spotifysta (hakusana: "a", eli yleinen)
-fetch('https://api.spotify.com/v1/search?q=a&type=track&limit=10', {
+// Haetaan satunnainen kappale Spotifysta (hakusana: "a", yleinen kirjain)
+fetch('https://api.spotify.com/v1/search?q=a&type=track&limit=30', {
   headers: {
     Authorization: 'Bearer ' + accessToken,
   },
 })
   .then(res => res.json())
   .then(data => {
-    const tracks = data.tracks.items.filter(track => track.preview_url); // Vain biisit joilla on preview
-    if (tracks.length < 4) throw new Error("Liian vähän biisejä");
+    const tracks = data.tracks.items.filter(track => track.preview_url); // Vain biisit joilla on esikuuntelu
+    if (tracks.length < 4) {
+      result.innerText = "⚠️ Ei tarpeeksi kappaleita ladattavaksi. Lataa sivu uudelleen.";
+      return;
+    }
 
     const correct = tracks[Math.floor(Math.random() * tracks.length)];
-    const choices = shuffle([...tracks].slice(0, 4));
-    if (!choices.includes(correct)) choices[Math.floor(Math.random() * 4)] = correct;
+    const wrongChoices = tracks.filter(t => t.id !== correct.id);
+    const randomWrong = shuffle(wrongChoices).slice(0, 3);
+    const choices = shuffle([correct, ...randomWrong]);
 
     audio.src = correct.preview_url;
 
     choices.forEach(track => {
       const btn = document.createElement('button');
-      btn.innerText = track.name + ' – ' + track.artists[0].name;
+      btn.innerText = `${track.name} – ${track.artists[0].name}`;
       btn.onclick = () => {
         if (track.id === correct.id) {
           result.innerText = "✅ Oikein!";
@@ -40,7 +44,7 @@ fetch('https://api.spotify.com/v1/search?q=a&type=track&limit=10', {
     });
   })
   .catch(err => {
-    console.error(err);
+    console.error("Virhe:", err);
     result.innerText = "⚠️ Virhe haettaessa kappaletta.";
   });
 
