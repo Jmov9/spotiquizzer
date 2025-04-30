@@ -1,4 +1,5 @@
-const accessToken = new URLSearchParams(window.location.search).get('access_token');
+const accessToken = localStorage.getItem('access_token') ||
+  new URLSearchParams(window.location.search).get('access_token');
 
 if (!accessToken) {
   document.body.innerHTML = "<h2>🔒 Token puuttuu!</h2>";
@@ -9,36 +10,48 @@ const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-const playlistId = '0bIUgov7PqxNuASp4dQGYU'; // Testilista, jossa esikuuntelu pitäs muka toimii
-
+const playlistId = '37i9dQZF1DXcBWIGoYBM5M'; // Today's Top Hits
+const market = 'FI'; // You can set this dynamically if needed
 
 console.log("🎵 Haetaan Today's Top Hits -soittolista...");
 
-fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=100`, {
-  headers: {
-    Authorization: `Bearer ${accessToken}`
+async function fetchAllTracks(url, allTracks = []) {
+  const res = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+
+  if (!res.ok) {
+    throw new Error("API-virhe: " + res.status);
   }
-})
-  .then(res => {
-    if (!res.ok) throw new Error("API-virhe: " + res.status);
-    return res.json();
-  })
-  .then(data => {
-    console.log("✅ API-vastaus:", data);
 
-    const playable = data.items
-      .map(item => item.track)
-      .filter(track => track && track.preview_url);
+  const data = await res.json();
+  const items = data.items.map(item => item.track).filter(track => track && track.preview_url);
+  allTracks.push(...items);
 
-    console.log("🎧 Soittokelpoisia kappaleita:", playable.length);
+  if (data.next) {
+    return fetchAllTracks(data.next, allTracks);
+  }
 
-    if (playable.length < 4) {
+  return allTracks;
+}
+
+function shuffle(arr) {
+  return arr.sort(() => Math.random() - 0.5);
+}
+
+(async () => {
+  try {
+    const allTracks = await fetchAllTracks(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50&market=${market}`);
+
+    console.log("🎧 Esikuunneltavia kappaleita:", allTracks.length);
+    if (allTracks.length < 4) {
       throw new Error("Liian vähän esikuunneltavia kappaleita");
     }
 
-    const correct = playable[Math.floor(Math.random() * playable.length)];
-    const choices = shuffle([...playable].slice(0, 4));
-
+    const correct = allTracks[Math.floor(Math.random() * allTracks.length)];
+    const choices = shuffle([...allTracks].slice(0, 4));
     if (!choices.includes(correct)) {
       choices[Math.floor(Math.random() * 4)] = correct;
     }
@@ -57,12 +70,8 @@ fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=100`, {
       };
       optionsDiv.appendChild(btn);
     });
-  })
-  .catch(err => {
+  } catch (err) {
     console.error("❌ Virhe:", err);
     result.innerText = "⚠️ Virhe: " + err.message;
-  });
-
-function shuffle(arr) {
-  return arr.sort(() => Math.random() - 0.5);
-}
+  }
+})();
