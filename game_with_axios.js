@@ -1,4 +1,3 @@
-
 import axios from 'https://cdn.skypack.dev/axios';
 
 const accessToken = localStorage.getItem('access_token') ||
@@ -9,39 +8,54 @@ if (!accessToken) {
   throw new Error("Access token not found");
 }
 
-console.log("🔑 Käytettävä token:", accessToken);
+console.log("🔐 Käytettävä token:", accessToken);
 
 const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-const playlistId = '6UeSakyzhiEt4NB3UAd6NQ'; // mun oma
+// 🎵 Toimiva soittolista: Global Top 50
+const playlistId = '6UeSakyzhiEt4NB3UAd6NQ';
 const market = 'FI';
 
-async function fetchTracks() {
-  const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50&market=${market}`;
-
+async function fetchAllTracks(url, collected = []) {
   try {
-    const response = await axios.get(url, {
+    const res = await axios.get(url, {
       headers: {
         Authorization: 'Bearer ' + accessToken,
-      }
+      },
     });
 
-    const data = response.data;
+    const items = res.data.items.map(item => item.track).filter(track => track && track.preview_url);
+    collected.push(...items);
 
-    const playableTracks = data.items
-      .map(item => item.track)
-      .filter(track => track && track.preview_url);
+    if (res.data.next) {
+      return fetchAllTracks(res.data.next, collected);
+    }
 
-    console.log("🎧 Esikuunneltavia:", playableTracks.length);
+    return collected;
+  } catch (err) {
+    console.error("❌ Axios-pyyntö epäonnistui:", err);
+    throw new Error("AxiosError: " + err.message);
+  }
+}
 
-    if (playableTracks.length < 4) {
+function shuffle(arr) {
+  return arr.sort(() => Math.random() - 0.5);
+}
+
+(async () => {
+  try {
+    const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50&market=${market}`;
+    const allTracks = await fetchAllTracks(apiUrl);
+
+    console.log("🎧 Esikuunneltavia kappaleita:", allTracks.length);
+    if (allTracks.length < 4) {
       throw new Error("Liian vähän esikuunneltavia kappaleita");
     }
 
-    const correct = playableTracks[Math.floor(Math.random() * playableTracks.length)];
-    const choices = shuffle([...playableTracks].slice(0, 4));
+    const correct = allTracks[Math.floor(Math.random() * allTracks.length)];
+    const choices = shuffle([...allTracks].slice(0, 4));
     if (!choices.includes(correct)) {
       choices[Math.floor(Math.random() * 4)] = correct;
     }
@@ -60,15 +74,8 @@ async function fetchTracks() {
       };
       optionsDiv.appendChild(btn);
     });
-
   } catch (err) {
-    console.error("❌ Axios-pyyntö epäonnistui:", err);
-    result.innerText = "⚠️ Virhe: " + (err.response?.data?.error?.message || err.message);
+    console.error("❌ Virhe:", err);
+    result.innerText = "⚠️ Virhe: " + err.message;
   }
-}
-
-function shuffle(arr) {
-  return arr.sort(() => Math.random() - 0.5);
-}
-
-fetchTracks();
+})();
