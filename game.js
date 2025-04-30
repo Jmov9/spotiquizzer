@@ -1,4 +1,3 @@
-
 const accessToken = localStorage.getItem('access_token') ||
   new URLSearchParams(window.location.search).get('access_token');
 
@@ -11,11 +10,11 @@ const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-// ✅ Käytettävä Spotify-soittolistan ID (älä käytä koko URLia!)
-const playlistId = '37i9dQZF1DXcBWIGoYBM5M'; // Esim. Today's Top Hits
-const market = 'FI'; // Voit säätää halutuksi markkina-alueeksi
+// ✅ Käytettävä Spotify-soittolistan ID (All Out 00s)
+const playlistId = '37i9dQZF1DX4UtSsGT1Sbe';
+const market = 'FI'; // Voit vaihtaa esim. 'US' jos haluat
 
-console.log("🎵 Haetaan soittolista Spotifylta...");
+console.log("🎵 Haetaan Spotify-soittolista...");
 
 async function fetchAllTracks(url, allTracks = []) {
   const res = await fetch(url, {
@@ -25,12 +24,15 @@ async function fetchAllTracks(url, allTracks = []) {
   });
 
   if (!res.ok) {
-    const err = await res.json();
+    const err = await res.json().catch(() => ({}));
     throw new Error("API-virhe: " + res.status + " - " + JSON.stringify(err));
   }
 
   const data = await res.json();
-  const items = data.items.map(item => item.track).filter(track => track && track.preview_url);
+  const items = data.items
+    .map(item => item.track)
+    .filter(track => track && track.preview_url);
+
   allTracks.push(...items);
 
   if (data.next) {
