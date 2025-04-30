@@ -10,7 +10,8 @@ const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-const playlistId = '37i9dQZF1DXcBWIGoYBM5M'; // Today's Top Hits
+const playlistId = '37i9dQZEVXbMDoHDwVN2tF'; // Top 50 Global
+
 const market = 'FI'; // You can set this dynamically if needed
 
 console.log("🎵 Haetaan Today's Top Hits -soittolista...");
