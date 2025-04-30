@@ -1,20 +1,27 @@
-const accessToken = localStorage.getItem('access_token') ||
-  new URLSearchParams(window.location.search).get('access_token');
+// 🔑 Haetaan access token URL:stä tai localStoragesta
+let accessToken = new URLSearchParams(window.location.search).get('access_token');
+if (accessToken) {
+  localStorage.setItem('access_token', accessToken);
+} else {
+  accessToken = localStorage.getItem('access_token');
+}
 
 if (!accessToken) {
   document.body.innerHTML = "<h2>🔒 Token puuttuu!</h2>";
   throw new Error("Access token not found");
 }
 
+console.log("🔐 Käytettävä token:", accessToken);
+
 const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-// Käytettävä soittolistan ID
-const playlistId = '37i9dQZEVXbMDoHDwVN2tF'; // Esim. Viral 50 Global
-const market = 'FI'; // Voi säätää tarpeen mukaan
+// 🎵 Käytettävä Spotify-soittolista
+const playlistId = '37i9dQZEVXbMDoHDwVN2tF'; // Viral 50 Global
+const market = 'FI';
 
-console.log("🎵 Haetaan soittolista Spotifylta...");
+console.log("🎵 Haetaan Spotify-soittolista...");
 
 async function fetchAllTracks(url, allTracks = []) {
   const res = await fetch(url, {
@@ -24,7 +31,8 @@ async function fetchAllTracks(url, allTracks = []) {
   });
 
   if (!res.ok) {
-    throw new Error("API-virhe: " + res.status);
+    const text = await res.text(); // näytä vastaus selkeämmin
+    throw new Error(`API-virhe: ${res.status}\n${text}`);
   }
 
   const data = await res.json();
@@ -44,7 +52,9 @@ function shuffle(arr) {
 
 (async () => {
   try {
-    const allTracks = await fetchAllTracks(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50&market=${market}`);
+    const allTracks = await fetchAllTracks(
+      `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50&market=${market}`
+    );
 
     console.log("🎧 Esikuunneltavia kappaleita:", allTracks.length);
     if (allTracks.length < 4) {
@@ -66,7 +76,7 @@ function shuffle(arr) {
         if (track.id === correct.id) {
           result.innerText = "✅ Oikein!";
         } else {
-          result.innerText = `❌ Väärin! Oikea oli: ${correct.name} – ${track.artists[0].name}`;
+          result.innerText = `❌ Väärin! Oikea oli: ${correct.name} – ${correct.artists[0].name}`;
         }
       };
       optionsDiv.appendChild(btn);
