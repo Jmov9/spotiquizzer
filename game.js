@@ -20,7 +20,7 @@ const result = document.getElementById('result');
 // 🎵 Käytettävä Spotify-soittolista
 const playlistId = '37i9dQZF1DXcBWIGoYBM5M'; // Today's Top Hits
 
-const playlistId = '37i9dQZEVXbMDoHDwVN2tF'; // Viral 50 Global
+
 const market = 'FI';
 
 console.log("🎵 Haetaan Spotify-soittolista...");
