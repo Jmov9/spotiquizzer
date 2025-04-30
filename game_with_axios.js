@@ -1,24 +1,22 @@
 
-import axios from 'https://cdn.skypack.dev/axios'; // Varmistetaan Axiosin saatavuus selaimessa
+import axios from 'https://cdn.skypack.dev/axios';
 
 const accessToken = localStorage.getItem('access_token') ||
   new URLSearchParams(window.location.search).get('access_token');
 
-if (accessToken) {
-  localStorage.setItem('access_token', accessToken);
-} else {
+if (!accessToken) {
   document.body.innerHTML = "<h2>🔒 Token puuttuu!</h2>";
   throw new Error("Access token not found");
 }
+
+console.log("🔑 Käytettävä token:", accessToken);
 
 const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-const playlistId = '37i9dQZF1DX4UtSsGT1Sbe'; // All Out 00s
+const playlistId = '6UeSakyzhiEt4NB3UAd6NQ'; // mun oma
 const market = 'FI';
-
-console.log("🎧 Käytettävä token:", accessToken);
 
 async function fetchTracks() {
   const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50&market=${market}`;
@@ -26,20 +24,24 @@ async function fetchTracks() {
   try {
     const response = await axios.get(url, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+        Authorization: 'Bearer ' + accessToken,
+      }
     });
 
-    const allTracks = response.data.items
+    const data = response.data;
+
+    const playableTracks = data.items
       .map(item => item.track)
       .filter(track => track && track.preview_url);
 
-    if (allTracks.length < 4) {
+    console.log("🎧 Esikuunneltavia:", playableTracks.length);
+
+    if (playableTracks.length < 4) {
       throw new Error("Liian vähän esikuunneltavia kappaleita");
     }
 
-    const correct = allTracks[Math.floor(Math.random() * allTracks.length)];
-    const choices = shuffle([...allTracks].slice(0, 4));
+    const correct = playableTracks[Math.floor(Math.random() * playableTracks.length)];
+    const choices = shuffle([...playableTracks].slice(0, 4));
     if (!choices.includes(correct)) {
       choices[Math.floor(Math.random() * 4)] = correct;
     }
@@ -61,7 +63,7 @@ async function fetchTracks() {
 
   } catch (err) {
     console.error("❌ Axios-pyyntö epäonnistui:", err);
-    result.innerText = "⚠️ Virhe: " + err.message;
+    result.innerText = "⚠️ Virhe: " + (err.response?.data?.error?.message || err.message);
   }
 }
 
