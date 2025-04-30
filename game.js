@@ -11,10 +11,9 @@ const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
 const playlistId = '37i9dQZEVXbMDoHDwVN2tF'; // Top 50 Global
+const market = 'FI';
 
-const market = 'FI'; // You can set this dynamically if needed
-
-console.log("🎵 Haetaan Today's Top Hits -soittolista...");
+console.log("🎵 Haetaan Top 50 Global -soittolista...");
 
 async function fetchAllTracks(url, allTracks = []) {
   const res = await fetch(url, {
@@ -44,7 +43,8 @@ function shuffle(arr) {
 
 (async () => {
   try {
-    const allTracks = await fetchAllTracks(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50&market=${market}`);
+    const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50&market=${market}`;
+    const allTracks = await fetchAllTracks(apiUrl);
 
     console.log("🎧 Esikuunneltavia kappaleita:", allTracks.length);
     if (allTracks.length < 4) {
