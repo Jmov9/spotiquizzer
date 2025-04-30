@@ -9,7 +9,8 @@ const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-const playlistId = '37i9dQZF1DXcBWIGoYBM5M'; // Today's Top Hits
+const playlistId = '0bIUgov7PqxNuASp4dQGYU'; // Testilista, jossa esikuuntelu pitäs muka toimii
+
 
 console.log("🎵 Haetaan Today's Top Hits -soittolista...");
 
