@@ -10,10 +10,11 @@ const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-const playlistId = '37i9dQZEVXbMDoHDwVN2tF'; // Top 50 Global
-const market = 'FI';
+// Käytettävä soittolistan ID
+const playlistId = '37i9dQZEVXbMDoHDwVN2tF'; // Esim. Viral 50 Global
+const market = 'FI'; // Voi säätää tarpeen mukaan
 
-console.log("🎵 Haetaan Top 50 Global -soittolista...");
+console.log("🎵 Haetaan soittolista Spotifylta...");
 
 async function fetchAllTracks(url, allTracks = []) {
   const res = await fetch(url, {
@@ -43,8 +44,7 @@ function shuffle(arr) {
 
 (async () => {
   try {
-    const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50&market=${market}`;
-    const allTracks = await fetchAllTracks(apiUrl);
+    const allTracks = await fetchAllTracks(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50&market=${market}`);
 
     console.log("🎧 Esikuunneltavia kappaleita:", allTracks.length);
     if (allTracks.length < 4) {
@@ -66,7 +66,7 @@ function shuffle(arr) {
         if (track.id === correct.id) {
           result.innerText = "✅ Oikein!";
         } else {
-          result.innerText = `❌ Väärin! Oikea oli: ${correct.name} – ${correct.artists[0].name}`;
+          result.innerText = `❌ Väärin! Oikea oli: ${correct.name} – ${track.artists[0].name}`;
         }
       };
       optionsDiv.appendChild(btn);
