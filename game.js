@@ -1,29 +1,21 @@
-// 🔑 Haetaan access token URL:stä tai localStoragesta
-let accessToken = new URLSearchParams(window.location.search).get('access_token');
-if (accessToken) {
-  localStorage.setItem('access_token', accessToken);
-} else {
-  accessToken = localStorage.getItem('access_token');
-}
+
+const accessToken = localStorage.getItem('access_token') ||
+  new URLSearchParams(window.location.search).get('access_token');
 
 if (!accessToken) {
   document.body.innerHTML = "<h2>🔒 Token puuttuu!</h2>";
   throw new Error("Access token not found");
 }
 
-console.log("🔐 Käytettävä token:", accessToken);
-
 const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-// 🎵 Käytettävä Spotify-soittolista
-const playlistId = '37i9dQZF1DXcBWIGoYBM5M'; // Today's Top Hits
+// ✅ Käytettävä Spotify-soittolistan ID (älä käytä koko URLia!)
+const playlistId = '37i9dQZF1DXcBWIGoYBM5M'; // Esim. Today's Top Hits
+const market = 'FI'; // Voit säätää halutuksi markkina-alueeksi
 
-
-const market = 'FI';
-
-console.log("🎵 Haetaan Spotify-soittolista...");
+console.log("🎵 Haetaan soittolista Spotifylta...");
 
 async function fetchAllTracks(url, allTracks = []) {
   const res = await fetch(url, {
@@ -33,8 +25,8 @@ async function fetchAllTracks(url, allTracks = []) {
   });
 
   if (!res.ok) {
-    const text = await res.text(); // näytä vastaus selkeämmin
-    throw new Error(`API-virhe: ${res.status}\n${text}`);
+    const err = await res.json();
+    throw new Error("API-virhe: " + res.status + " - " + JSON.stringify(err));
   }
 
   const data = await res.json();
