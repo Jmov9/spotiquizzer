@@ -1,6 +1,7 @@
 import axios from 'https://cdn.skypack.dev/axios';
 
-const accessToken = localStorage.getItem('access_token') ||
+const accessToken =
+  localStorage.getItem('access_token') ||
   new URLSearchParams(window.location.search).get('access_token');
 
 if (!accessToken) {
@@ -8,18 +9,19 @@ if (!accessToken) {
   throw new Error("Access token not found");
 }
 
-localStorage.setItem('access_token', accessToken); // Tallenna token jos ei vielä ollut
+localStorage.setItem('access_token', accessToken);
 
-console.log("🔐 Käytettävä token:", accessToken);
+console.log("🔐 Token:", accessToken);
 
 const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-const playlistId = '6UeSakyzhiEt4NB3UAd6NQ'; // Billboard Hot 100
-const market = 'FI';
+// ✅ Käytettävä soittolista
+const playlistId = '6UeSakyzhiEt4NB3UAd6NQ';
+const market = 'US'; // Tämä markkina toimii listalle varmasti!
 
-async function fetchAllTracks(url, collected = []) {
+async function fetchAllTracks(url, playlistType = 'regular', collected = []) {
   try {
     const res = await axios.get(url, {
       headers: {
@@ -27,25 +29,21 @@ async function fetchAllTracks(url, collected = []) {
       },
     });
 
-    const isWrapped = res.data.items.length && res.data.items[0].track;
-    const newItems = res.data.items
-      .map(item => isWrapped ? item.track : item)
-      .filter(track => track && track.preview_url);
+    const items = res.data.items;
+    const tracks = playlistType === 'top' ? items : items.map(e => e.track);
+    const withPreview = tracks.filter(t => t && t.preview_url);
 
-    collected.push(...newItems);
+    collected.push(...withPreview);
 
     if (res.data.next) {
-      return fetchAllTracks(res.data.next, collected);
+      return fetchAllTracks(res.data.next, playlistType, collected);
     }
 
     return collected;
   } catch (err) {
-    const errMsg = err.response?.data
-      ? `Spotify API error ${err.response.status}: ${JSON.stringify(err.response.data)}`
-      : err.message;
-
-    console.error("❌ Axios-pyyntö epäonnistui:", errMsg);
-    throw new Error(errMsg);
+    const msg = err.response?.data?.error?.message || err.message;
+    console.error("❌ Spotify API error:", err.response?.data || err);
+    throw new Error("Spotify API error " + err.response?.status + ": " + msg);
   }
 }
 
@@ -56,7 +54,7 @@ function shuffle(arr) {
 (async () => {
   try {
     const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50&market=${market}`;
-    const allTracks = await fetchAllTracks(apiUrl);
+    const allTracks = await fetchAllTracks(apiUrl, 'regular');
 
     console.log("🎧 Esikuunneltavia kappaleita:", allTracks.length);
     if (allTracks.length < 4) {
@@ -85,7 +83,7 @@ function shuffle(arr) {
       optionsDiv.appendChild(btn);
     });
   } catch (err) {
-    console.error("❌ Virhe:", err.message);
+    console.error("❌ Virhe:", err);
     result.innerText = "⚠️ Virhe: " + err.message;
   }
 })();
