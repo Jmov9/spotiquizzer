@@ -10,12 +10,13 @@ const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-// ✅ Käytettävä Spotify-soittolistan ID (All Out 00s)
-const playlistId = '37i9dQZF1DX4UtSsGT1Sbe';
-const market = 'FI'; // Voit vaihtaa esim. 'US' jos haluat
+// Käytettävä soittolista (Billboard Hot 100 tässä esimerkissä)
+const playlistId = '6UeSakyzhiEt4NB3UAd6NQ';
+const market = 'FI'; // Voit muuttaa tarpeen mukaan
 
-console.log("🎵 Haetaan Spotify-soittolista...");
-
+/**
+ * Haetaan kaikki kappaleet sivutettuna ja suodatetaan vain esikuunneltavat
+ */
 async function fetchAllTracks(url, allTracks = []) {
   const res = await fetch(url, {
     headers: {
@@ -24,17 +25,20 @@ async function fetchAllTracks(url, allTracks = []) {
   });
 
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
+    const err = await res.json();
     throw new Error("API-virhe: " + res.status + " - " + JSON.stringify(err));
   }
 
   const data = await res.json();
+
+  // Vain kappaleet joilla on esikuuntelu (preview_url)
   const items = data.items
     .map(item => item.track)
     .filter(track => track && track.preview_url);
 
   allTracks.push(...items);
 
+  // Jos on lisää sivuja, haetaan seuraava sivu
   if (data.next) {
     return fetchAllTracks(data.next, allTracks);
   }
@@ -42,29 +46,36 @@ async function fetchAllTracks(url, allTracks = []) {
   return allTracks;
 }
 
+/**
+ * Sekoitusalgoritmi
+ */
 function shuffle(arr) {
   return arr.sort(() => Math.random() - 0.5);
 }
 
 (async () => {
   try {
-    const allTracks = await fetchAllTracks(
-      `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50&market=${market}`
-    );
+    const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50&market=${market}`;
+    const allTracks = await fetchAllTracks(apiUrl);
 
     console.log("🎧 Esikuunneltavia kappaleita:", allTracks.length);
     if (allTracks.length < 4) {
       throw new Error("Liian vähän esikuunneltavia kappaleita");
     }
 
+    // Valitaan satunnainen oikea vastaus
     const correct = allTracks[Math.floor(Math.random() * allTracks.length)];
+
+    // Valitaan 4 vaihtoehtoa
     const choices = shuffle([...allTracks].slice(0, 4));
     if (!choices.includes(correct)) {
       choices[Math.floor(Math.random() * 4)] = correct;
     }
 
+    // Asetetaan äänileike
     audio.src = correct.preview_url;
 
+    // Luodaan painikkeet
     choices.forEach(track => {
       const btn = document.createElement('button');
       btn.innerText = `${track.name} – ${track.artists[0].name}`;
