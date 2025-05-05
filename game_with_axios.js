@@ -19,26 +19,35 @@ const playlistId = '6UeSakyzhiEt4NB3UAd6NQ';
 const market = 'FI';
 
 async function fetchAllTracks(url, collected = []) {
-  try {
-    const res = await axios.get(url, {
-      headers: {
-        Authorization: 'Bearer ' + accessToken,
-      },
-    });
-
-    const items = res.data.items.map(item => item.track).filter(track => track && track.preview_url);
-    collected.push(...items);
-
-    if (res.data.next) {
-      return fetchAllTracks(res.data.next, collected);
+    try {
+      const res = await axios.get(url, {
+        headers: {
+          Authorization: 'Bearer ' + accessToken,
+        },
+      });
+  
+      const items = res.data.items.map(item => item.track).filter(track => track && track.preview_url);
+      collected.push(...items);
+  
+      if (res.data.next) {
+        return fetchAllTracks(res.data.next, collected);
+      }
+  
+      return collected;
+    } catch (err) {
+      // 👇 Tarkempi virheen tulostus
+      if (err.response) {
+        console.error("❌ Spotify API vastasi virheellä:");
+        console.error("Status:", err.response.status);
+        console.error("Data:", err.response.data);
+        throw new Error(`Spotify API error ${err.response.status}: ${JSON.stringify(err.response.data)}`);
+      } else {
+        console.error("❌ Axios virhe:", err);
+        throw new Error("AxiosError: " + err.message);
+      }
     }
-
-    return collected;
-  } catch (err) {
-    console.error("❌ Axios-pyyntö epäonnistui:", err);
-    throw new Error("AxiosError: " + err.message);
   }
-}
+  
 
 function shuffle(arr) {
   return arr.sort(() => Math.random() - 0.5);
