@@ -1,14 +1,28 @@
 import axios from 'https://cdn.skypack.dev/axios';
 
-const accessToken = localStorage.getItem('access_token') ||
-  new URLSearchParams(window.location.search).get('access_token');
+const urlToken = new URLSearchParams(window.location.search).get('access_token');
+const storageToken = localStorage.getItem('access_token');
 
-if (!accessToken) {
-  document.body.innerHTML = "<h2>🔒 Token puuttuu!</h2>";
-  throw new Error("Access token not found");
+console.log("🔍 Token URLista:", urlToken);
+console.log("🔍 Token localStoragesta:", storageToken);
+
+let accessToken = urlToken || storageToken;
+
+if (urlToken && urlToken !== storageToken) {
+  console.log("💾 Päivitetään localStorage uudella tokenilla...");
+  localStorage.setItem('access_token', urlToken);
+}
+
+if (!accessToken || accessToken.length < 50) {
+  document.body.innerHTML = "<h2>🔒 Virhe: Token puuttuu tai on liian lyhyt!</h2>";
+  throw new Error("Access token missing or invalid");
 }
 
 console.log("🔐 Käytettävä token:", accessToken);
+
+// ⬇ tästä eteenpäin voi jatkua vanha toimiva koodi esim. fetchAllTracks jne...
+
+
 
 const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
