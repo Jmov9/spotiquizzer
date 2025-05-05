@@ -1,89 +1,76 @@
 import axios from 'https://cdn.skypack.dev/axios';
 
-// Haetaan access token URLista tai localStoragesta
-const tokenFromUrl = new URLSearchParams(window.location.search).get('access_token');
-if (tokenFromUrl) {
-  localStorage.setItem('access_token', tokenFromUrl);
-}
+const accessToken = localStorage.getItem('access_token') ||
+  new URLSearchParams(window.location.search).get('access_token');
 
-const accessToken = localStorage.getItem('access_token');
 if (!accessToken) {
   document.body.innerHTML = "<h2>🔒 Token puuttuu!</h2>";
   throw new Error("Access token not found");
 }
 
-console.log("🔐 Käytettävä token:", accessToken);
+localStorage.setItem('access_token', accessToken); // Tallenna token jos ei vielä ollut
 
-const playlistId = '6UeSakyzhiEt4NB3UAd6NQ'; // Billboard Hot 100
-const market = 'FI';
+console.log("🔐 Käytettävä token:", accessToken);
 
 const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-// 🔄 Tokenin päivitys, jos saatavilla
-async function refreshToken() {
-  alert("🔁 Access token vanhentunut. Kirjaudu sisään uudelleen.");
-  localStorage.removeItem('access_token');
-  window.location.href = '/spotiquizzer/';
-}
+const playlistId = '6UeSakyzhiEt4NB3UAd6NQ'; // Billboard Hot 100
+const market = 'FI';
 
-// 🔽 Haetaan kappaleet
-async function getItems(url, isFirstPage = false) {
+async function fetchAllTracks(url, collected = []) {
   try {
-    const params = {
-      ...(isFirstPage && { limit: 50 }),
-      market,
-    };
-
     const res = await axios.get(url, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        Authorization: 'Bearer ' + accessToken,
       },
-      params,
     });
 
-    return res.data;
-  } catch (err) {
-    if (err.response?.status === 401) {
-      await refreshToken();
-    } else {
-      throw err;
+    const isWrapped = res.data.items.length && res.data.items[0].track;
+    const newItems = res.data.items
+      .map(item => isWrapped ? item.track : item)
+      .filter(track => track && track.preview_url);
+
+    collected.push(...newItems);
+
+    if (res.data.next) {
+      return fetchAllTracks(res.data.next, collected);
     }
+
+    return collected;
+  } catch (err) {
+    const errMsg = err.response?.data
+      ? `Spotify API error ${err.response.status}: ${JSON.stringify(err.response.data)}`
+      : err.message;
+
+    console.error("❌ Axios-pyyntö epäonnistui:", errMsg);
+    throw new Error(errMsg);
   }
-}
-
-async function getAllTracks(url, all = []) {
-  const data = await getItems(url, !all.length);
-  if (!data) return [];
-
-  const items = data.items.map(i => i.track).filter(t => t?.preview_url);
-  all = all.concat(items);
-
-  return data.next ? getAllTracks(data.next, all) : all;
 }
 
 function shuffle(arr) {
   return arr.sort(() => Math.random() - 0.5);
 }
 
-// 🎮 Päälogiikka
 (async () => {
   try {
-    const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
-    const allTracks = await getAllTracks(apiUrl);
+    const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50&market=${market}`;
+    const allTracks = await fetchAllTracks(apiUrl);
 
     console.log("🎧 Esikuunneltavia kappaleita:", allTracks.length);
-    if (allTracks.length < 4) throw new Error("Liian vähän esikuunneltavia kappaleita");
+    if (allTracks.length < 4) {
+      throw new Error("Liian vähän esikuunneltavia kappaleita");
+    }
 
     const correct = allTracks[Math.floor(Math.random() * allTracks.length)];
     const choices = shuffle([...allTracks].slice(0, 4));
+
     if (!choices.includes(correct)) {
       choices[Math.floor(Math.random() * 4)] = correct;
     }
 
     audio.src = correct.preview_url;
-    result.innerText = '';
 
     choices.forEach(track => {
       const btn = document.createElement('button');
@@ -92,14 +79,13 @@ function shuffle(arr) {
         if (track.id === correct.id) {
           result.innerText = "✅ Oikein!";
         } else {
-          result.innerText = `❌ Väärin! Oikea oli: ${correct.name} – ${correct.artists[0].name}`;
+          result.innerText = `❌ Väärin! Oikea oli: ${correct.name} – ${track.artists[0].name}`;
         }
       };
       optionsDiv.appendChild(btn);
     });
-
   } catch (err) {
-    console.error("❌ Virhe:", err);
+    console.error("❌ Virhe:", err.message);
     result.innerText = "⚠️ Virhe: " + err.message;
   }
 })();
