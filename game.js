@@ -14,14 +14,16 @@ function fetchDeezerData(query, callback) {
     delete window[callbackName];
     script.remove();
   };
-  script.src = `https://api.deezer.com/search?q=${query}&limit=20&output=jsonp&callback=${callbackName}`;
+  script.src = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&limit=20&output=jsonp&callback=${callbackName}`;
   document.body.appendChild(script);
 }
 
-// 🔄 Haetaan biisejä satunnaisella kirjaimella
-const randomLetter = String.fromCharCode(97 + Math.floor(Math.random() * 26));
+// 🔄 Valitaan satunnainen genre
+const genres = ['rap', 'pop', 'rock', 'house'];
+const selectedGenre = genres[Math.floor(Math.random() * genres.length)];
+console.log("🎧 Valittu genre:", selectedGenre);
 
-fetchDeezerData(randomLetter, (json) => {
+fetchDeezerData(selectedGenre, (json) => {
   const tracks = json.data.filter(t => t.preview);
 
   if (tracks.length < 4) {
@@ -44,7 +46,7 @@ fetchDeezerData(randomLetter, (json) => {
       if (track.id === correct.id) {
         result.innerText = "✅ Oikein!";
       } else {
-        result.innerText = `❌ Väärin! Oikea oli: ${correct.title} – ${track.artist.name}`;
+        result.innerText = `❌ Väärin! Oikea oli: ${correct.title} – ${correct.artist.name}`;
       }
     };
     optionsDiv.appendChild(btn);
