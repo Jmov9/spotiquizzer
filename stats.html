@@ -22,8 +22,21 @@
   </select>
 
   <br><br>
-  <button onclick="window.location.href='menu.html'">🏠 Palaa valikkoon</button>
+  <button id="backToMenu">🏠 Palaa valikkoon</button>
 
   <script src="stats.js"></script>
+  <script>
+    // Hakee tokenin joko URL:sta tai localStoragesta
+    const token = new URLSearchParams(window.location.search).get('access_token') || localStorage.getItem('access_token');
+
+    // Lisää token linkkiin takaisin menuun
+    document.getElementById('backToMenu').addEventListener('click', () => {
+      if (token) {
+        window.location.href = `menu.html?access_token=${token}`;
+      } else {
+        window.location.href = 'menu.html';
+      }
+    });
+  </script>
 </body>
 </html>

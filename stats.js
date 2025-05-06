@@ -1,4 +1,10 @@
-const accessToken = new URLSearchParams(window.location.search).get('access_token');
+// Tallenna token URL:sta localStorageen, jos sellainen tulee
+const urlToken = new URLSearchParams(window.location.search).get('access_token');
+if (urlToken) {
+  localStorage.setItem('access_token', urlToken);
+}
+
+const accessToken = localStorage.getItem('access_token');
 
 if (!accessToken) {
   document.body.innerHTML = "<h2>🔒 Token puuttuu!</h2>";
@@ -27,7 +33,7 @@ async function updateStats() {
     // Top kappaleet
     const topTracks = await fetchSpotifyData(`me/top/tracks?limit=10&time_range=${timeRange}`);
     const trackList = document.getElementById('top-tracks');
-    trackList.innerHTML = ''; // tyhjennä ennen uutta listaa
+    trackList.innerHTML = '';
     topTracks.items.forEach(track => {
       const li = document.createElement('li');
       li.innerText = `${track.name} – ${track.artists[0].name}`;
@@ -37,7 +43,7 @@ async function updateStats() {
     // Top artistit
     const topArtists = await fetchSpotifyData(`me/top/artists?limit=10&time_range=${timeRange}`);
     const artistList = document.getElementById('top-artists');
-    artistList.innerHTML = ''; // tyhjennä ennen uutta listaa
+    artistList.innerHTML = '';
     topArtists.items.forEach(artist => {
       const li = document.createElement('li');
       li.innerText = artist.name;
@@ -50,11 +56,11 @@ async function updateStats() {
   }
 }
 
-// Ajanjakson dropdownin kuuntelu
+// Dropdownin kuuntelu
 document.addEventListener('DOMContentLoaded', () => {
   const select = document.getElementById('timeRange');
   if (select) {
     select.addEventListener('change', updateStats);
   }
-  updateStats(); // aloitus
+  updateStats();
 });
