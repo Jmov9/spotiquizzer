@@ -23,7 +23,7 @@ const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
 // Billboard Hot 100 -soittolista
-const playlistId = '6UeSakyzhiEt4NB3UAd6NQ';
+const playlistId = '0bIUgov7PqxNuASp4dQGYU';
 const market = 'FI';
 
 async function fetchAllTracks(url, allTracks = []) {
