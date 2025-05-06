@@ -14,25 +14,30 @@ function fetchDeezerData(query, callback) {
     delete window[callbackName];
     script.remove();
   };
-  script.src = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&limit=20&output=jsonp&callback=${callbackName}`;
+  script.src = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&limit=10&output=jsonp&callback=${callbackName}`;
   document.body.appendChild(script);
 }
 
-// 🔄 Valitaan satunnainen genre
+// 🔤 Satunnaisia hakuja useista genreistä
 const genres = ['rap', 'pop', 'rock', 'house'];
-const selectedGenre = genres[Math.floor(Math.random() * genres.length)];
-console.log("🎧 Valittu genre:", selectedGenre);
+const searchTerms = [];
+while (searchTerms.length < 4) {
+  const randomLetter = String.fromCharCode(97 + Math.floor(Math.random() * 26));
+  const genre = genres[Math.floor(Math.random() * genres.length)];
+  searchTerms.push(`${genre} ${randomLetter}`);
+}
 
-fetchDeezerData(selectedGenre, (json) => {
-  const tracks = json.data.filter(t => t.preview);
+let allTracks = [];
 
-  if (tracks.length < 4) {
-    result.innerText = "⚠️ Liian vähän esikuunneltavia kappaleita";
+function proceedIfReady() {
+  const validTracks = allTracks.filter(t => t.preview);
+  if (validTracks.length < 4) {
+    result.innerText = "⚠️ Ei löytynyt tarpeeksi esikuunneltavia kappaleita.";
     return;
   }
 
-  const correct = tracks[Math.floor(Math.random() * tracks.length)];
-  const choices = shuffle([...tracks].slice(0, 4));
+  const correct = validTracks[Math.floor(Math.random() * validTracks.length)];
+  const choices = shuffle([...validTracks].slice(0, 4));
   if (!choices.includes(correct)) {
     choices[Math.floor(Math.random() * 4)] = correct;
   }
@@ -50,5 +55,19 @@ fetchDeezerData(selectedGenre, (json) => {
       }
     };
     optionsDiv.appendChild(btn);
+  });
+}
+
+// 🔁 Haetaan biisejä eri hauilla
+let queriesDone = 0;
+searchTerms.forEach(term => {
+  fetchDeezerData(term, (json) => {
+    if (json.data) {
+      allTracks.push(...json.data);
+    }
+    queriesDone++;
+    if (queriesDone === searchTerms.length) {
+      proceedIfReady();
+    }
   });
 });
