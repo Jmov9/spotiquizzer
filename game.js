@@ -1,6 +1,44 @@
 const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
+// Pelitilan valinta
+function startSolo() {
+    localStorage.setItem('mode', 'solo');
+    document.getElementById('setup').style.display = 'none';
+    document.getElementById('game-container').style.display = 'block';
+    startGame();
+  }
+  
+  function showPartySetup() {
+    document.getElementById('party-setup').style.display = 'block';
+  }
+  
+  function addPlayerInput() {
+    const container = document.getElementById('player-inputs');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = `Pelaaja ${container.children.length + 1}`;
+    container.appendChild(input);
+  }
+  
+  function startParty() {
+    const names = [...document.querySelectorAll('#player-inputs input')]
+      .map(i => i.value.trim()).filter(Boolean);
+  
+    if (names.length < 2) {
+      alert('Anna vähintään kaksi nimeä!');
+      return;
+    }
+  
+    localStorage.setItem('mode', 'party');
+    localStorage.setItem('players', JSON.stringify(names));
+    localStorage.setItem('currentPlayer', '0');
+  
+    document.getElementById('setup').style.display = 'none';
+    document.getElementById('game-container').style.display = 'block';
+    startGame();
+  }
+  
 
 function shuffle(arr) {
   return arr.sort(() => Math.random() - 0.5);
