@@ -2,6 +2,8 @@ const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 const currentPlayerLabel = document.getElementById('current-player');
+const roundSlider = document.getElementById('roundCountInput');
+const roundDisplay = document.getElementById('roundCountDisplay');
 
 let players = [];
 let currentPlayerIndex = 0;
@@ -12,6 +14,14 @@ let queriesDone = 0;
 let playerScores = {};
 let roundsPlayed = 0;
 let maxRounds = 10;
+
+// ⏱ Päivitä kierrosmäärän näyttö liukukytkimestä
+roundSlider.addEventListener('input', () => {
+  roundDisplay.innerText = roundSlider.value;
+});
+function getSelectedRoundCount() {
+  return parseInt(roundSlider.value);
+}
 
 // ==============================
 // PELITILAN ASETUKSET
@@ -24,6 +34,7 @@ function startSolo() {
   players = ['solo'];
   playerScores = { solo: 0 };
   roundsPlayed = 0;
+  maxRounds = getSelectedRoundCount();
   startGame();
 }
 
@@ -53,6 +64,7 @@ function startParty() {
   names.forEach(name => playerScores[name] = 0);
   roundsPlayed = 0;
   currentPlayerIndex = 0;
+  maxRounds = getSelectedRoundCount();
   localStorage.setItem('mode', 'party');
 
   document.getElementById('setup').style.display = 'none';
@@ -61,7 +73,7 @@ function startParty() {
 }
 
 // ==============================
-// API JA PELILOGIIKKA
+// API JA LOGIIKKA
 // ==============================
 
 function shuffle(arr) {
@@ -83,17 +95,17 @@ function fetchDeezerData(query, callback) {
 function handleAnswer(selectedTrack) {
   audio.pause();
   const isCorrect = selectedTrack.id === currentCorrectTrack.id;
-  const currentPlayer = players[currentPlayerIndex] || 'solo';
+  const name = players[currentPlayerIndex] || 'solo';
 
   if (isCorrect) {
-    playerScores[currentPlayer]++;
+    playerScores[name]++;
   }
 
   result.innerText = isCorrect
     ? "✅ Oikein!"
     : `❌ Väärin! Oikea oli: ${currentCorrectTrack.title} – ${currentCorrectTrack.artist.name}`;
 
-  answeredThisRound.push(currentPlayer);
+  answeredThisRound.push(name);
 
   if (localStorage.getItem('mode') === 'party') {
     currentPlayerIndex++;
@@ -101,18 +113,18 @@ function handleAnswer(selectedTrack) {
       currentPlayerIndex = 0;
       answeredThisRound = [];
       roundsPlayed++;
-    }
-
-    if (roundsPlayed >= maxRounds) {
-      setTimeout(endGame, 1500);
+      if (roundsPlayed >= maxRounds) {
+        endGame();
+      } else {
+        setTimeout(startGame, 1500);
+      }
     } else {
       setTimeout(presentQuestion, 1500);
     }
-
   } else {
     roundsPlayed++;
     if (roundsPlayed >= maxRounds) {
-      setTimeout(endGame, 1500);
+      endGame();
     } else {
       setTimeout(startGame, 1500);
     }
@@ -187,25 +199,25 @@ function startGame() {
 function endGame() {
   document.getElementById('game-container').style.display = 'none';
   const endScreen = document.getElementById('end-screen');
-  const winnerDisplay = document.getElementById('winner');
+
+  const entries = Object.entries(playerScores);
+  const sorted = entries.sort((a, b) => b[1] - a[1]);
+  const topScore = sorted[0][1];
+  const winners = sorted.filter(([_, score]) => score === topScore);
+
+  const winnerText = winners.length > 1
+    ? `🤝 Tasapeli: ${winners.map(w => w[0]).join(' & ')}`
+    : `🏆 Voittaja: ${winners[0][0]}`;
+
+  document.getElementById('winner').innerText = winnerText;
+
   const scoreList = document.getElementById('score-list');
   scoreList.innerHTML = '';
-
-  const scores = Object.entries(playerScores);
-  const maxScore = Math.max(...scores.map(([_, score]) => score));
-  const winners = scores.filter(([_, score]) => score === maxScore).map(([name]) => name);
-
-  if (winners.length === 1) {
-    winnerDisplay.innerText = `🏆 Voittaja: ${winners[0]}`;
-  } else {
-    winnerDisplay.innerText = `🤝 Tasapeli: ${winners.join(', ')}`;
-  }
-
-  scores.forEach(([name, score]) => {
+  for (const [name, score] of entries) {
     const li = document.createElement('li');
     li.innerText = `${name}: ${score} pistettä`;
     scoreList.appendChild(li);
-  });
+  }
 
   endScreen.style.display = 'block';
 }
