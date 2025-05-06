@@ -1,94 +1,46 @@
-// =====================
-// 🔐 Access Token käsittely
-// =====================
-let accessToken = localStorage.getItem('access_token');
-
-const tokenFromUrl = new URLSearchParams(window.location.search).get('access_token');
-if (tokenFromUrl) {
-  accessToken = tokenFromUrl;
-  localStorage.setItem('access_token', accessToken);
-  history.replaceState(null, '', window.location.pathname); // Piilota token URL:sta
-}
-
-if (!accessToken) {
-  document.body.innerHTML = "<h2>🔒 Token puuttuu!</h2>";
-  throw new Error("Access token not found");
-}
-
-// =====================
-// 🎵 Pelin logiikka
-// =====================
 const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
 
-// Billboard Hot 100 -soittolista
-const playlistId = '0bIUgov7PqxNuASp4dQGYU';
-const market = 'FI';
+// Satunnainen hakusana esim. aakkosista
+const randomLetter = String.fromCharCode(97 + Math.floor(Math.random() * 26));
 
-async function fetchAllTracks(url, allTracks = []) {
-  const res = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`
-    }
-  });
+fetch(`https://api.deezer.com/search?q=${randomLetter}&limit=20&output=jsonp`, {
+  method: 'GET'
+})
+  .then(response => response.text())
+  .then(raw => {
+    const json = JSON.parse(raw.substring(raw.indexOf('(') + 1, raw.lastIndexOf(')'))); // JSONP purku
+    const tracks = json.data.filter(t => t.preview); // Vain ne joilla on preview
 
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error("API-virhe: " + res.status + " - " + JSON.stringify(err));
-  }
+    if (tracks.length < 4) throw new Error("Liian vähän esikuunneltavia kappaleita");
 
-  const data = await res.json();
-
-  const items = data.items
-    .map(item => item.track)
-    .filter(track => track && track.preview_url);
-
-  allTracks.push(...items);
-
-  if (data.next) {
-    return fetchAllTracks(data.next, allTracks);
-  }
-
-  return allTracks;
-}
-
-function shuffle(arr) {
-  return arr.sort(() => Math.random() - 0.5);
-}
-
-(async () => {
-  try {
-    const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50&market=${market}`;
-    const allTracks = await fetchAllTracks(apiUrl);
-
-    console.log("🎧 Esikuunneltavia kappaleita:", allTracks.length);
-    if (allTracks.length < 4) {
-      throw new Error("Liian vähän esikuunneltavia kappaleita");
-    }
-
-    const correct = allTracks[Math.floor(Math.random() * allTracks.length)];
-    const choices = shuffle([...allTracks].slice(0, 4));
+    const correct = tracks[Math.floor(Math.random() * tracks.length)];
+    const choices = shuffle([...tracks].slice(0, 4));
     if (!choices.includes(correct)) {
       choices[Math.floor(Math.random() * 4)] = correct;
     }
 
-    audio.src = correct.preview_url;
+    audio.src = correct.preview;
 
     choices.forEach(track => {
       const btn = document.createElement('button');
-      btn.innerText = `${track.name} – ${track.artists[0].name}`;
+      btn.innerText = `${track.title} – ${track.artist.name}`;
       btn.onclick = () => {
         if (track.id === correct.id) {
           result.innerText = "✅ Oikein!";
         } else {
-          result.innerText = `❌ Väärin! Oikea oli: ${correct.name} – ${correct.artists[0].name}`;
+          result.innerText = `❌ Väärin! Oikea oli: ${correct.title} – ${correct.artist.name}`;
         }
       };
       optionsDiv.appendChild(btn);
     });
-  } catch (err) {
+  })
+  .catch(err => {
     console.error("❌ Virhe:", err);
     result.innerText = "⚠️ Virhe: " + err.message;
-  }
-})();
+  });
+
+function shuffle(arr) {
+  return arr.sort(() => Math.random() - 0.5);
+}
