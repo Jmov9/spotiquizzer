@@ -28,6 +28,16 @@
 
     <div id="result"></div>
   </div>
+  <div id="end-screen" style="display: none;">
+    <h2>Game Over</h2>
+    <div>
+      <p id="winner">Voittaja:</p>
+      <ul id="score-list"></ul>
+    </div>
+    <button onclick="location.reload()">🔄 New Game</button>
+    <button onclick="window.location.href='index.html'">🏠 Quit Game</button>
+  </div>
+  
 
   <script src="game.js"></script>
 </body>

@@ -9,6 +9,10 @@ let answeredThisRound = [];
 let currentCorrectTrack = null;
 let allTracks = [];
 let queriesDone = 0;
+let playerScores = {};
+let roundsPlayed = 0;
+const maxRounds = 10;
+
 
 // ==============================
 // PELITILAN ASETUKSET
@@ -18,6 +22,12 @@ function startSolo() {
   localStorage.setItem('mode', 'solo');
   document.getElementById('setup').style.display = 'none';
   document.getElementById('game-container').style.display = 'block';
+  players = ['solo'];
+playerScores = { solo: 0 };
+roundsPlayed = 0;
+
+
+  
   startGame();
 }
 
@@ -36,6 +46,12 @@ function addPlayerInput() {
 function startParty() {
   const names = [...document.querySelectorAll('#player-inputs input')]
     .map(i => i.value.trim()).filter(Boolean);
+    players = names;
+    playerScores = {};
+    names.forEach(name => playerScores[name] = 0);
+    roundsPlayed = 0;
+    
+
 
   if (names.length < 2) {
     alert('Anna vähintään kaksi nimeä!');
@@ -93,6 +109,34 @@ function handleAnswer(selectedTrack) {
   } else {
     setTimeout(startGame, 1500);
   }
+  if (isCorrect) {
+    const name = players[currentPlayerIndex] || 'solo';
+    playerScores[name]++;
+  }
+  
+  if (localStorage.getItem('mode') === 'party') {
+    currentPlayerIndex++;
+    if (currentPlayerIndex >= players.length) {
+      currentPlayerIndex = 0;
+      answeredThisRound = [];
+      roundsPlayed++;
+      if (roundsPlayed >= maxRounds) {
+        endGame();
+        return;
+      }
+      setTimeout(startGame, 1500);
+    } else {
+      setTimeout(presentQuestion, 1500);
+    }
+  } else {
+    roundsPlayed++;
+    if (roundsPlayed >= maxRounds) {
+      endGame();
+    } else {
+      setTimeout(startGame, 1500);
+    }
+  }
+  
 }
 
 function presentQuestion() {
@@ -159,3 +203,21 @@ function startGame() {
     });
   });
 }
+function endGame() {
+    document.getElementById('game-container').style.display = 'none';
+    const endScreen = document.getElementById('end-screen');
+    const winner = Object.entries(playerScores).sort((a, b) => b[1] - a[1])[0];
+  
+    document.getElementById('winner').innerText = `🏆 Voittaja: ${winner[0]}`;
+    const scoreList = document.getElementById('score-list');
+    scoreList.innerHTML = '';
+  
+    for (const [name, score] of Object.entries(playerScores)) {
+      const li = document.createElement('li');
+      li.innerText = `${name}: ${score} pistettä`;
+      scoreList.appendChild(li);
+    }
+  
+    endScreen.style.display = 'block';
+  }
+  
