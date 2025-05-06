@@ -206,8 +206,8 @@ function endGame() {
   const winners = sorted.filter(([_, score]) => score === topScore);
 
   const winnerText = winners.length > 1
-    ? `🤝 Tasapeli: ${winners.map(w => w[0]).join(' & ')}`
-    : `🏆 Voittaja: ${winners[0][0]}`;
+    ? `🤝 Draw: ${winners.map(w => w[0]).join(' & ')}`
+    : `🏆 Winner: ${winners[0][0]}`;
 
   document.getElementById('winner').innerText = winnerText;
 
@@ -215,7 +215,7 @@ function endGame() {
   scoreList.innerHTML = '';
   for (const [name, score] of entries) {
     const li = document.createElement('li');
-    li.innerText = `${name}: ${score} pistettä`;
+    li.innerText = `${name}: ${score} points`;
     scoreList.appendChild(li);
   }
 
