@@ -11,8 +11,7 @@ let allTracks = [];
 let queriesDone = 0;
 let playerScores = {};
 let roundsPlayed = 0;
-const maxRounds = 10;
-
+let maxRounds = 10;
 
 // ==============================
 // PELITILAN ASETUKSET
@@ -23,11 +22,8 @@ function startSolo() {
   document.getElementById('setup').style.display = 'none';
   document.getElementById('game-container').style.display = 'block';
   players = ['solo'];
-playerScores = { solo: 0 };
-roundsPlayed = 0;
-
-
-  
+  playerScores = { solo: 0 };
+  roundsPlayed = 0;
   startGame();
 }
 
@@ -46,12 +42,6 @@ function addPlayerInput() {
 function startParty() {
   const names = [...document.querySelectorAll('#player-inputs input')]
     .map(i => i.value.trim()).filter(Boolean);
-    players = names;
-    playerScores = {};
-    names.forEach(name => playerScores[name] = 0);
-    roundsPlayed = 0;
-    
-
 
   if (names.length < 2) {
     alert('Anna vähintään kaksi nimeä!');
@@ -59,6 +49,9 @@ function startParty() {
   }
 
   players = names;
+  playerScores = {};
+  names.forEach(name => playerScores[name] = 0);
+  roundsPlayed = 0;
   currentPlayerIndex = 0;
   localStorage.setItem('mode', 'party');
 
@@ -68,7 +61,7 @@ function startParty() {
 }
 
 // ==============================
-// API JA LOGIIKKA
+// API JA PELILOGIIKKA
 // ==============================
 
 function shuffle(arr) {
@@ -90,53 +83,40 @@ function fetchDeezerData(query, callback) {
 function handleAnswer(selectedTrack) {
   audio.pause();
   const isCorrect = selectedTrack.id === currentCorrectTrack.id;
+  const currentPlayer = players[currentPlayerIndex] || 'solo';
+
+  if (isCorrect) {
+    playerScores[currentPlayer]++;
+  }
 
   result.innerText = isCorrect
     ? "✅ Oikein!"
     : `❌ Väärin! Oikea oli: ${currentCorrectTrack.title} – ${currentCorrectTrack.artist.name}`;
 
-  answeredThisRound.push(players[currentPlayerIndex] || 'solo');
+  answeredThisRound.push(currentPlayer);
 
-  if (localStorage.getItem('mode') === 'party') {
-    currentPlayerIndex++;
-    if (currentPlayerIndex >= players.length) {
-      currentPlayerIndex = 0;
-      answeredThisRound = [];
-      setTimeout(startGame, 1500);
-    } else {
-      setTimeout(presentQuestion, 1500);
-    }
-  } else {
-    setTimeout(startGame, 1500);
-  }
-  if (isCorrect) {
-    const name = players[currentPlayerIndex] || 'solo';
-    playerScores[name]++;
-  }
-  
   if (localStorage.getItem('mode') === 'party') {
     currentPlayerIndex++;
     if (currentPlayerIndex >= players.length) {
       currentPlayerIndex = 0;
       answeredThisRound = [];
       roundsPlayed++;
-      if (roundsPlayed >= maxRounds) {
-        endGame();
-        return;
-      }
-      setTimeout(startGame, 1500);
+    }
+
+    if (roundsPlayed >= maxRounds) {
+      setTimeout(endGame, 1500);
     } else {
       setTimeout(presentQuestion, 1500);
     }
+
   } else {
     roundsPlayed++;
     if (roundsPlayed >= maxRounds) {
-      endGame();
+      setTimeout(endGame, 1500);
     } else {
       setTimeout(startGame, 1500);
     }
   }
-  
 }
 
 function presentQuestion() {
@@ -203,21 +183,29 @@ function startGame() {
     });
   });
 }
+
 function endGame() {
-    document.getElementById('game-container').style.display = 'none';
-    const endScreen = document.getElementById('end-screen');
-    const winner = Object.entries(playerScores).sort((a, b) => b[1] - a[1])[0];
-  
-    document.getElementById('winner').innerText = `🏆 Voittaja: ${winner[0]}`;
-    const scoreList = document.getElementById('score-list');
-    scoreList.innerHTML = '';
-  
-    for (const [name, score] of Object.entries(playerScores)) {
-      const li = document.createElement('li');
-      li.innerText = `${name}: ${score} pistettä`;
-      scoreList.appendChild(li);
-    }
-  
-    endScreen.style.display = 'block';
+  document.getElementById('game-container').style.display = 'none';
+  const endScreen = document.getElementById('end-screen');
+  const winnerDisplay = document.getElementById('winner');
+  const scoreList = document.getElementById('score-list');
+  scoreList.innerHTML = '';
+
+  const scores = Object.entries(playerScores);
+  const maxScore = Math.max(...scores.map(([_, score]) => score));
+  const winners = scores.filter(([_, score]) => score === maxScore).map(([name]) => name);
+
+  if (winners.length === 1) {
+    winnerDisplay.innerText = `🏆 Voittaja: ${winners[0]}`;
+  } else {
+    winnerDisplay.innerText = `🤝 Tasapeli: ${winners.join(', ')}`;
   }
-  
+
+  scores.forEach(([name, score]) => {
+    const li = document.createElement('li');
+    li.innerText = `${name}: ${score} pistettä`;
+    scoreList.appendChild(li);
+  });
+
+  endScreen.style.display = 'block';
+}
