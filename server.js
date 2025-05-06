@@ -12,7 +12,8 @@ const client_secret = process.env.CLIENT_SECRET;
 const redirect_uri = process.env.REDIRECT_URI;
 
 app.get('/login', (req, res) => {
-  const scope = 'user-read-private playlist-read-private playlist-read-collaborative';
+  const scope = 'user-read-private playlist-read-private playlist-read-collaborative user-top-read';
+
 
   const params = querystring.stringify({
     response_type: 'code',
