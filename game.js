@@ -1,8 +1,19 @@
 const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
+const currentPlayerLabel = document.getElementById('current-player');
 
-// Pelitilan valinta
+let players = [];
+let currentPlayerIndex = 0;
+let answeredThisRound = [];
+let currentCorrectTrack = null;
+let allTracks = [];
+let queriesDone = 0;
+
+// ==============================
+// PELITILAN ASETUKSET
+// ==============================
+
 function startSolo() {
   localStorage.setItem('mode', 'solo');
   document.getElementById('setup').style.display = 'none';
@@ -31,14 +42,18 @@ function startParty() {
     return;
   }
 
+  players = names;
+  currentPlayerIndex = 0;
   localStorage.setItem('mode', 'party');
-  localStorage.setItem('players', JSON.stringify(names));
-  localStorage.setItem('currentPlayer', '0');
 
   document.getElementById('setup').style.display = 'none';
   document.getElementById('game-container').style.display = 'block';
   startGame();
 }
+
+// ==============================
+// API JA LOGIIKKA
+// ==============================
 
 function shuffle(arr) {
   return arr.sort(() => Math.random() - 0.5);
@@ -56,42 +71,68 @@ function fetchDeezerData(query, callback) {
   document.body.appendChild(script);
 }
 
-let allTracks = [];
-let queriesDone = 0;
+function handleAnswer(selectedTrack) {
+  audio.pause();
+  const isCorrect = selectedTrack.id === currentCorrectTrack.id;
 
-function proceedIfReady() {
+  result.innerText = isCorrect
+    ? "✅ Oikein!"
+    : `❌ Väärin! Oikea oli: ${currentCorrectTrack.title} – ${currentCorrectTrack.artist.name}`;
+
+  answeredThisRound.push(players[currentPlayerIndex] || 'solo');
+
+  if (localStorage.getItem('mode') === 'party') {
+    currentPlayerIndex++;
+    if (currentPlayerIndex >= players.length) {
+      currentPlayerIndex = 0;
+      answeredThisRound = [];
+      setTimeout(startGame, 1500);
+    } else {
+      setTimeout(presentQuestion, 1500);
+    }
+  } else {
+    setTimeout(startGame, 1500);
+  }
+}
+
+function presentQuestion() {
+  optionsDiv.innerHTML = '';
+  result.innerText = '';
+
   const validTracks = allTracks.filter(t => t.preview);
   if (validTracks.length < 4) {
-    result.innerText = "⚠️ Ei löytynyt tarpeeksi esikuunneltavia kappaleita.";
+    result.innerText = "⚠️ Ei tarpeeksi esikuunneltavia kappaleita.";
     return;
   }
 
-  const correct = validTracks[Math.floor(Math.random() * validTracks.length)];
-  const choices = shuffle([...validTracks].slice(0, 4));
-  if (!choices.includes(correct)) {
-    choices[Math.floor(Math.random() * 4)] = correct;
+  if (localStorage.getItem('mode') === 'party') {
+    const playerName = players[currentPlayerIndex];
+    currentPlayerLabel.innerText = `🎮 ${playerName}, sinun vuoro!`;
+  } else {
+    currentPlayerLabel.innerText = '';
   }
 
-  audio.src = correct.preview;
+  currentCorrectTrack = validTracks[Math.floor(Math.random() * validTracks.length)];
+  const choices = shuffle([...validTracks].slice(0, 4));
+  if (!choices.includes(currentCorrectTrack)) {
+    choices[Math.floor(Math.random() * 4)] = currentCorrectTrack;
+  }
+
+  audio.src = currentCorrectTrack.preview;
+  audio.play();
 
   choices.forEach(track => {
     const btn = document.createElement('button');
     btn.innerText = `${track.title} – ${track.artist.name}`;
-    btn.onclick = () => {
-      if (track.id === correct.id) {
-        result.innerText = "✅ Oikein!";
-      } else {
-        result.innerText = `❌ Väärin! Oikea oli: ${correct.title} – ${track.artist.name}`;
-      }
-    };
+    btn.onclick = () => handleAnswer(track);
     optionsDiv.appendChild(btn);
   });
 }
 
 function startGame() {
-  // Tyhjennetään vanhat
   optionsDiv.innerHTML = '';
   result.innerText = '';
+  currentPlayerLabel.innerText = '';
   audio.src = '';
 
   allTracks = [];
@@ -113,7 +154,7 @@ function startGame() {
       }
       queriesDone++;
       if (queriesDone === searchTerms.length) {
-        proceedIfReady();
+        presentQuestion();
       }
     });
   });
