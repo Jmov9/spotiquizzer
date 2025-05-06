@@ -7,6 +7,9 @@
 <body>
   <div id="setup">
     <h2>Valitse pelitila</h2>
+    <!-- Takaisin valikkoon ennen pelin alkua -->
+<button onclick="goToMenu()" style="margin-top: 1em;">🏠 Palaa valikkoon</button>
+
     <button onclick="startSolo()">🎧 Solo</button>
     <button onclick="showPartySetup()">🎉 Party</button>
 
@@ -43,5 +46,16 @@
   </div>
 
   <script src="game.js"></script>
+  <script>
+    function goToMenu() {
+      const token = new URLSearchParams(window.location.search).get('access_token') || localStorage.getItem('access_token');
+      if (token) {
+        window.location.href = `menu.html?access_token=${token}`;
+      } else {
+        window.location.href = 'menu.html';
+      }
+    }
+  </script>
+  
 </body>
 </html>
