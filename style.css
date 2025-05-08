@@ -109,15 +109,9 @@ audio {
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
 .playing {
@@ -134,54 +128,30 @@ audio {
 #options {
   margin-top: 1.5em;
 }
-#back-to-selection {
-    width: 50%;
-    margin: 2em auto 0;
-    font-size: 1em;
-    padding: 0.8em 1em;
-    border-radius: 8px;
-    background-color: #1db954;
-    color: white;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  #back-to-selection:hover {
-    background-color: #159c45;
-  }
-  
 
 .answer-option {
-    display: block;
-    width: 100%;
-    padding: 1em;
-    margin: 0.5em 0;
-    font-size: 1em;
-    border: none;
-    background-color: #1db954;
-    color: white;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-weight: bold;
-    text-align: center;
-  }
-  .answer-option:hover {
-    background-color: #159c45;
-  }
-  
+  background: white;
+  border-bottom: 1px solid #ccc;
+  padding: 1.2em 1em;
+  text-align: left;
+  font-size: 1em;
+  font-weight: normal;
+  border-radius: 0;
+  width: 100%;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
 
 .answer-option:first-child {
   border-top: 1px solid #ccc;
 }
 
-
+.answer-option:hover {
+  background: #f7f7f7;
+}
 
 .answer-option.selected {
-  background-color: #e6f0ff;
-  border-left: 4px solid #3399ff;
+  background-color: #e0e0e0;
   font-weight: bold;
   position: relative;
 }
@@ -192,8 +162,27 @@ audio {
   right: 1em;
   top: 50%;
   transform: translateY(-50%);
-  color: #3399ff;
-  font-size: 1.2em;
+  color: #007bff;
+  font-size: 1.4em;
+}
+
+/* Takaisin valintaan -napin erottelu */
+#back-to-selection {
+  width: 50%;
+  margin: 2em auto 0;
+  font-size: 1em;
+  padding: 0.8em 1em;
+  border-radius: 8px;
+  background-color: #1db954;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#back-to-selection:hover {
+  background-color: #159c45;
 }
 
 /* Lopputuloksen lista */
@@ -202,7 +191,7 @@ audio {
   padding: 0;
 }
 
-/* Takaisin-nappi (wrapperin ulkopuolella) */
+/* Takaisin-nuoli (sivun yläkulmassa) */
 #back-button {
   position: fixed;
   top: 1.2em;
@@ -220,13 +209,14 @@ audio {
   color: #159c45;
 }
 
+/* Otsikko */
 #view-title {
   font-size: 1.8em;
   font-weight: bold;
   margin-bottom: 0.5em;
 }
 
-/* Desktop- ja tablet-näytöt */
+/* Responsiivisuus */
 @media screen and (min-width: 768px) {
   #wrapper {
     max-width: 600px;
@@ -254,5 +244,9 @@ audio {
 
   #roundCountInput {
     width: 50%;
+  }
+
+  #back-to-selection {
+    width: 40%;
   }
 }
