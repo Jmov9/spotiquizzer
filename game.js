@@ -15,7 +15,6 @@ let playerScores = {};
 let roundsPlayed = 0;
 let maxRounds = 10;
 
-// Kierrosmäärän päivitys
 roundSlider.addEventListener('input', () => {
   roundDisplay.innerText = roundSlider.value;
 });
@@ -94,6 +93,7 @@ function fetchDeezerData(query, callback) {
 
 function handleAnswer(selectedTrack) {
   audio.pause();
+  document.getElementById('play-logo').classList.remove('playing');
   const isCorrect = selectedTrack.id === currentCorrectTrack.id;
   const name = players[currentPlayerIndex] || 'solo';
 
@@ -155,12 +155,7 @@ function presentQuestion() {
   }
 
   audio.src = currentCorrectTrack.preview;
-
-  // ▶️ Play-nappi
-  const playBtn = document.createElement('button');
-  playBtn.innerText = '▶️ Soita kappale';
-  playBtn.onclick = () => audio.play();
-  optionsDiv.appendChild(playBtn);
+  document.getElementById('play-logo').classList.remove('playing');
 
   // Vastausvaihtoehdot
   choices.forEach(track => {
@@ -201,56 +196,55 @@ function startGame() {
     });
   });
 }
+
 function togglePlayPause() {
-    const logo = document.getElementById('play-logo');
-  
-    if (audio.paused) {
-      audio.play();
-      logo.classList.add('playing');
-    } else {
-      audio.pause();
-      logo.classList.remove('playing');
-    }
+  const logo = document.getElementById('play-logo');
+
+  if (audio.paused) {
+    audio.play();
+    logo.classList.add('playing');
+  } else {
+    audio.pause();
+    logo.classList.remove('playing');
   }
-  
-  // Jos biisi päättyy, pysäytä animaatio
-  audio.addEventListener('ended', () => {
-    document.getElementById('play-logo').classList.remove('playing');
-  });
-  
+}
+
+audio.addEventListener('ended', () => {
+  document.getElementById('play-logo').classList.remove('playing');
+});
+
 function endGame() {
-    document.getElementById('game-container').style.display = 'none';
-    const endScreen = document.getElementById('end-screen');
-  
-    const entries = Object.entries(playerScores);
-    const sorted = entries.sort((a, b) => b[1] - a[1]);
-    const topScore = sorted[0][1];
-    const winners = sorted.filter(([_, score]) => score === topScore);
-  
-    const winnerText = winners.length > 1
-      ? `🤝 Tasapeli: ${winners.map(w => w[0]).join(' & ')}`
-      : `🏆 Voittaja: ${winners[0][0]}`;
-  
-    document.getElementById('winner').innerText = winnerText;
-  
-    const scoreList = document.getElementById('score-list');
-    scoreList.innerHTML = '';
-    for (const [name, score] of entries) {
-      const li = document.createElement('li');
-      li.innerText = `${name}: ${score} pistettä`;
-      scoreList.appendChild(li);
-    }
-  
-    // 🔊 Soita satunnainen päätösbiisi
-    const validTracks = allTracks.filter(t => t.preview);
-    if (validTracks.length > 0) {
-      const outroTrack = validTracks[Math.floor(Math.random() * validTracks.length)];
-      audio.src = outroTrack.preview;
-      audio.play().catch(err => {
-        console.warn("Autoplay ei sallittu, käyttäjän pitää klikata jotain ensin:", err);
-      });
-    }
-  
-    endScreen.style.display = 'block';
+  document.getElementById('game-container').style.display = 'none';
+  const endScreen = document.getElementById('end-screen');
+
+  const entries = Object.entries(playerScores);
+  const sorted = entries.sort((a, b) => b[1] - a[1]);
+  const topScore = sorted[0][1];
+  const winners = sorted.filter(([_, score]) => score === topScore);
+
+  const winnerText = winners.length > 1
+    ? `🤝 Tasapeli: ${winners.map(w => w[0]).join(' & ')}`
+    : `🏆 Voittaja: ${winners[0][0]}`;
+
+  document.getElementById('winner').innerText = winnerText;
+
+  const scoreList = document.getElementById('score-list');
+  scoreList.innerHTML = '';
+  for (const [name, score] of entries) {
+    const li = document.createElement('li');
+    li.innerText = `${name}: ${score} pistettä`;
+    scoreList.appendChild(li);
   }
-  
+
+  const validTracks = allTracks.filter(t => t.preview);
+  if (validTracks.length > 0) {
+    const outroTrack = validTracks[Math.floor(Math.random() * validTracks.length)];
+    audio.src = outroTrack.preview;
+    audio.play().catch(err => {
+      console.warn("Autoplay ei sallittu, käyttäjän pitää klikata jotain ensin:", err);
+    });
+    document.getElementById('play-logo').classList.add('playing');
+  }
+
+  endScreen.style.display = 'block';
+}
