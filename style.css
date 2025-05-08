@@ -216,7 +216,15 @@ audio {
     background: #1db954;
     color: white;
   }
-
+  
+  .material-symbols-outlined {
+    font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24;
+    font-size: 24px;
+  }
 /* Otsikko */
 #view-title {
   font-size: 1.8em;
