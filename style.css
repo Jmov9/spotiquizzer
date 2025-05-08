@@ -36,11 +36,17 @@ body {
   }
   
   /* Logo/play-kuva keskelle */
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  
   #play-logo {
-    display: block;
-    margin: 1.5em auto;
     width: 120px;
-    height: auto;
+    margin: 1em auto;
+    display: block;
     cursor: pointer;
     transition: transform 0.2s ease;
   }
@@ -48,6 +54,13 @@ body {
   #play-logo:hover {
     transform: scale(1.05);
   }
+  
+  /* Tämä luokka aktivoidaan JS:llä, kun musiikki soi */
+  .playing {
+    animation: pulse 1.5s infinite;
+  }
+  
+
   
   /* Game-over pisteiden lista */
   #end-screen ul {

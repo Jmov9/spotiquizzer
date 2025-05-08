@@ -27,13 +27,14 @@
   </div>
 
   <div id="game-container" style="display: none;">
-    <h2>Mikä kappale soi?</h2>
+    <h2>Guess the song?</h2>
 
-    <!-- Logo toimii soittonappina -->
-    <img id="play-logo" src="spotiquiz.jpg" alt="Play" onclick="audio.play()">
+<!-- Logo toimii play/pause-nappina -->
+<img id="play-logo" src="spotiquiz.jpg" alt="Play" onclick="togglePlayPause()">
 
-    <!-- Piilotettu soitin -->
-    <audio id="audioPlayer"></audio>
+<!-- Piilotettu soitin -->
+<audio id="audioPlayer"></audio>
+
 
     <div id="options"></div>
 

@@ -201,7 +201,23 @@ function startGame() {
     });
   });
 }
-
+function togglePlayPause() {
+    const logo = document.getElementById('play-logo');
+  
+    if (audio.paused) {
+      audio.play();
+      logo.classList.add('playing');
+    } else {
+      audio.pause();
+      logo.classList.remove('playing');
+    }
+  }
+  
+  // Jos biisi päättyy, pysäytä animaatio
+  audio.addEventListener('ended', () => {
+    document.getElementById('play-logo').classList.remove('playing');
+  });
+  
 function endGame() {
     document.getElementById('game-container').style.display = 'none';
     const endScreen = document.getElementById('end-screen');
