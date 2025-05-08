@@ -1,4 +1,4 @@
-/* Reset & perusasetukset */
+/* Globaalit perusasetukset */
 *,
 *::before,
 *::after {
@@ -16,7 +16,6 @@ body {
   position: relative;
 }
 
-/* Wrapper sisältää näkymät */
 #wrapper {
   display: flex;
   flex-direction: column;
@@ -26,52 +25,20 @@ body {
   padding: 2em 1em;
 }
 
-/* Takaisin-nappi (bodyssä) */
-#back-button {
-  position: fixed;
-  top: 1.2em;
-  left: 1.2em;
-  z-index: 10;
-  background: none;
-  border: none;
-  font-size: 1.8em;
-  cursor: pointer;
-  color: #1db954;
-  padding: 0;
-}
-
-#back-button:hover {
-  color: #159c45;
-}
-
-/* Peliotsikko laatikon ulkopuolella */
-#view-title {
-  font-size: 1.8em;
-  font-weight: bold;
-  margin-bottom: 1em;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: left;
-}
-
-/* Korttirunko (setup, peli, loppu) */
 #setup,
 #game-container,
 #end-screen {
   background-color: #eee;
-  padding: 2em 1em;
+  padding: 2.5em 1.5em;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   margin: 2em auto;
-  width: 100%;
-  max-width: 500px;
+  max-width: 90%;
   display: flex;
   flex-direction: column;
   gap: 1.5em;
 }
 
-/* Napit */
 button {
   display: block;
   width: 100%;
@@ -96,7 +63,6 @@ button:hover {
   box-shadow: 0 0 0 2px rgba(18, 140, 60, 0.3);
 }
 
-/* Pelaajasyöttö */
 #party-setup input[type="text"] {
   width: 100%;
   padding: 1em;
@@ -106,7 +72,6 @@ button:hover {
   margin: 0.5em 0;
 }
 
-/* Kierrosmäärä */
 #roundCountDisplay {
   font-weight: bold;
   display: inline-block;
@@ -119,7 +84,6 @@ button:hover {
   display: block;
 }
 
-/* Logo ja audio */
 audio {
   max-width: 100%;
   margin-top: 1em;
@@ -153,7 +117,6 @@ audio {
   margin-bottom: 1.5em;
 }
 
-/* Vastausvaihtoehdot listana */
 #options {
   margin-top: 1.5em;
 }
@@ -166,8 +129,9 @@ audio {
   text-align: left;
   cursor: pointer;
   font-size: 1em;
-  border-radius: 0;
+  box-sizing: border-box;
   transition: background 0.2s ease;
+  border-radius: 0;
   margin: 0;
 }
 
@@ -187,7 +151,7 @@ audio {
 }
 
 .answer-option.selected::after {
-  content: "✔";
+  content: "\2713";
   position: absolute;
   right: 1em;
   top: 50%;
@@ -196,13 +160,34 @@ audio {
   font-size: 1.2em;
 }
 
-/* Lopputuloksen lista */
 #end-screen ul {
   list-style: none;
   padding: 0;
 }
 
-/* Desktop-näytöt */
+#back-button {
+  position: fixed;
+  top: 1.2em;
+  left: 1.2em;
+  z-index: 10;
+  background: none;
+  border: none;
+  font-size: 1.8em;
+  cursor: pointer;
+  color: #1db954;
+  padding: 0;
+}
+
+#back-button:hover {
+  color: #159c45;
+}
+
+#view-title {
+  font-size: 1.8em;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
 @media screen and (min-width: 768px) {
   #wrapper {
     max-width: 600px;
