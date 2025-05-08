@@ -5,12 +5,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SpotiQuizzer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <!-- Takaisin-nappi pysyvästi näkyvissä -->
-  <button id="back-button" onclick="goToMenu()">&larr;</button>
+  <button id="back-button" onclick="goToMenu()">
+    <span class="material-symbols-outlined">chevron_left</span>
+  </button>
+  
+
 
   <main id="wrapper">
     <!-- Otsikko, näytetään vain pelin aikana -->

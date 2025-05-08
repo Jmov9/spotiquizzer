@@ -167,23 +167,40 @@ audio {
 }
 
 /* Takaisin valintaan -nappi (pienempi) */
-#back-to-selection {
-  width: 60%;
-  margin: 2em auto 0;
-  font-size: 1em;
-  padding: 0.8em 1em;
-  border-radius: 8px;
-  background-color: #1db954;
-  color: white;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-#back-to-selection:hover {
-  background-color: #159c45;
-}
+#back-button {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 999;
+    background: white;
+    border: 2px solid #1db954;
+    color: #1db954;
+    font-size: 1.8rem;
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  #back-button:hover {
+    background: #1db954;
+    color: white;
+  }
+  
+  .material-symbols-outlined {
+    font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24;
+    font-size: 24px;
+  }
+  
 
 /* Lopputuloksen lista */
 #end-screen ul {
