@@ -6,11 +6,11 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main id="wrapper">
-    
-    <!-- Takaisin-nappi -->
-    <button id="back-button" onclick="goToMenu()">←</button>
 
+  <!-- Takaisin-nappi kuuluu bodyyn, ei wrapperiin -->
+  <button id="back-button" onclick="goToMenu()">←</button>
+
+  <main id="wrapper">
     <!-- Pelin aloitusnäkymä -->
     <div id="setup">
       <h2>Valitse pelitila</h2>
@@ -59,7 +59,6 @@
       <button onclick="location.reload()">New Game</button>
       <button onclick="goToMenu()">Quit Game</button>
     </div>
-
   </main>
 
   <script src="game.js"></script>
@@ -72,3 +71,4 @@
   </script>
 </body>
 </html>
+
