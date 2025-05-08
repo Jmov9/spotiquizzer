@@ -1,12 +1,12 @@
-/* 🎯 Perustyyli (puhelimet ensin, ns. "mobile first") */
+/* 🎯 Mobile-first (puhelimet oletuksena) */
 body {
     font-family: sans-serif;
     margin: 1em;
     background-color: #f4f4f4;
     color: #222;
+    text-align: center;
   }
   
-  /* Napit */
   button {
     display: block;
     width: 100%;
@@ -17,22 +17,45 @@ body {
     background-color: #1db954;
     color: white;
     border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
   }
   
   button:hover {
     background-color: #159c45;
   }
   
-  /* Piilota liukukytkin otsikko pienillä näytöillä jos halutaan */
+  /* Vastausvaihtoehdot container */
+  #options {
+    margin-top: 1.5em;
+  }
+  
+  /* Round info */
   #roundCountDisplay {
     font-weight: bold;
   }
   
-  /* 📱 Mobile default (alle 768px) oletetaan tässä jo olevan)
-     Tämä toimii automaattisesti ellei muuta määritellä. */
+  /* Logo/play-kuva keskelle */
+  #play-logo {
+    display: block;
+    margin: 1.5em auto;
+    width: 120px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
   
+  #play-logo:hover {
+    transform: scale(1.05);
+  }
   
-  /* 💻 Desktop- ja tablet-tyylit (isot näytöt) */
+  /* Game-over pisteiden lista */
+  #end-screen ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  /* 💻 Desktop ja tablet-näytöt */
   @media screen and (min-width: 768px) {
     body {
       max-width: 600px;
@@ -47,23 +70,19 @@ body {
       width: auto;
       min-width: 200px;
       font-size: 1.1em;
-      margin: 0.5em;
+      margin: 0.5em auto;
     }
   
     #options {
       display: flex;
       flex-direction: column;
       gap: 1em;
+      align-items: center;
     }
   
     #party-setup input {
       width: 100%;
       padding: 0.5em;
-    }
-  
-    #end-screen ul {
-      list-style: none;
-      padding: 0;
     }
   }
   

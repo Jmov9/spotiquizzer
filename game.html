@@ -4,12 +4,10 @@
   <meta charset="UTF-8" />
   <title>SpotiQuizzer</title>
   <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
   <div id="setup">
     <h2>Valitse pelitila</h2>
-    <!-- Takaisin valikkoon ennen pelin alkua -->
     <button onclick="goToMenu()" style="margin-top: 1em;">🏠 Palaa valikkoon</button>
 
     <button onclick="startSolo()">🎧 Solo</button>
@@ -30,9 +28,13 @@
 
   <div id="game-container" style="display: none;">
     <h2>Mikä kappale soi?</h2>
-    <audio id="audioPlayer" controls></audio>
 
-    <!-- Soita-nappi ja vastausvaihtoehdot lisätään tähän -->
+    <!-- Logo toimii soittonappina -->
+    <img id="play-logo" src="spotiquiz.jpg" alt="Play" onclick="audio.play()">
+
+    <!-- Piilotettu soitin -->
+    <audio id="audioPlayer"></audio>
+
     <div id="options"></div>
 
     <p id="current-player" style="font-weight: bold; font-size: 1.2em;"></p>
@@ -47,7 +49,6 @@
       <p id="winner">Winner:</p>
       <ul id="score-list"></ul>
     </div>
-   
 
     <button onclick="location.reload()">🔄 New Game</button>
     <button onclick="window.location.href='index.html'">🏠 Quit Game</button>
