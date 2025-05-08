@@ -8,12 +8,13 @@
 </head>
 <body>
 
-  <!-- Takaisin-nappi erillisenä -->
-  <button id="back-button" onclick="goToMenu()">←</button>
-
   <main id="wrapper">
-    <!-- Ulkoinen otsikko pelin aikana -->
-    <h2 id="view-title" style="display: none;">Guess the song?</h2>
+
+    <!-- Takaisin-nappi + otsikko -->
+    <div id="game-header" style="display: none;">
+      <button id="back-button" onclick="goToMenu()">←</button>
+      <h2 id="view-title">Guess the song?</h2>
+    </div>
 
     <!-- Pelin aloitusnäkymä -->
     <div id="setup">
@@ -71,12 +72,12 @@
       window.location.href = token ? `${base}?access_token=${token}` : base;
     }
 
-    // Näyttää otsikon kun peli käynnistyy
+    // Näyttää otsikon + back-napin kun peli käynnistyy
     document.addEventListener('DOMContentLoaded', () => {
-      const viewTitle = document.getElementById('view-title');
+      const header = document.getElementById('game-header');
       const container = document.getElementById('game-container');
       const observer = new MutationObserver(() => {
-        viewTitle.style.display = container.style.display === 'none' ? 'none' : 'block';
+        header.style.display = container.style.display === 'none' ? 'none' : 'flex';
       });
       observer.observe(container, { attributes: true, attributeFilter: ['style'] });
     });

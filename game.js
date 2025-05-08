@@ -52,6 +52,7 @@ function startSolo() {
   localStorage.setItem('mode', 'solo');
   document.getElementById('setup').style.display = 'none';
   document.getElementById('game-container').style.display = 'block';
+  document.getElementById('view-title').style.display = 'block';
   players = ['solo'];
   playerScores = { solo: 0 };
   roundsPlayed = 0;
@@ -86,6 +87,7 @@ function startParty() {
 
   document.getElementById('setup').style.display = 'none';
   document.getElementById('game-container').style.display = 'block';
+  document.getElementById('view-title').style.display = 'block';
   startGame();
 }
 
@@ -155,6 +157,8 @@ function presentQuestion() {
     return;
   }
 
+  document.getElementById('view-title').style.display = 'block';
+
   if (localStorage.getItem('mode') === 'party') {
     const playerName = players[currentPlayerIndex];
     currentPlayerLabel.innerText = `${playerName}, sinun vuoro!`;
@@ -174,6 +178,7 @@ function presentQuestion() {
   choices.forEach(track => {
     const btn = document.createElement('button');
     btn.innerText = `${track.title} – ${track.artist.name}`;
+    btn.classList.add('answer-option');
     btn.onclick = () => handleAnswer(track);
     optionsDiv.appendChild(btn);
   });
@@ -229,6 +234,8 @@ audio.addEventListener('ended', () => {
 function endGame() {
   document.getElementById('game-container').style.display = 'none';
   const endScreen = document.getElementById('end-screen');
+
+  document.getElementById('view-title').style.display = 'none';
 
   const entries = Object.entries(playerScores);
   const sorted = entries.sort((a, b) => b[1] - a[1]);
