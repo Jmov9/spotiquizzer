@@ -168,9 +168,9 @@ audio {
 
 /* Takaisin valintaan -nappi (pienempi) */
 #back-button {
-    position: fixed;
-    top: 1rem;
-    left: 1rem;
+    position: absolut;
+    top: 0,4rem;
+    left: 0,4rem;
     z-index: 999;
     background: white;
     border: 2px solid #1db954;
