@@ -225,16 +225,16 @@ function endGame() {
       scoreList.appendChild(li);
     }
   
-    // 🎵 Soita satunnainen pelin aikana käytetty biisi
+    // 🔊 Soita satunnainen päätösbiisi
     const validTracks = allTracks.filter(t => t.preview);
     if (validTracks.length > 0) {
       const outroTrack = validTracks[Math.floor(Math.random() * validTracks.length)];
       audio.src = outroTrack.preview;
-      audio.play();
+      audio.play().catch(err => {
+        console.warn("Autoplay ei sallittu, käyttäjän pitää klikata jotain ensin:", err);
+      });
     }
   
     endScreen.style.display = 'block';
+  }
   
-  
-
-}
