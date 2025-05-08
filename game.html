@@ -6,58 +6,61 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <main id="wrapper">
+    
+    <!-- Takaisin-nappi -->
+    <button id="back-button" onclick="goToMenu()">←</button>
 
-  <!-- Takaisin-nappi -->
-  <button id="back-button" onclick="goToMenu()">←</button>
+    <!-- Pelin aloitusnäkymä -->
+    <div id="setup">
+      <h2>Valitse pelitila</h2>
 
-  <!-- Pelin aloitusnäkymä -->
-  <div id="setup">
-    <h2>Valitse pelitila</h2>
+      <button id="solo-btn" onclick="selectMode('solo')">Solo</button>
+      <button id="party-btn" onclick="selectMode('party')">Party</button>
 
-    <button id="solo-btn" onclick="selectMode('solo')">Solo</button>
-    <button id="party-btn" onclick="selectMode('party')">Party</button>
-
-    <div id="party-setup" style="display:none;">
-      <h3>Syötä pelaajien nimet:</h3>
-      <div id="player-inputs">
-        <input type="text" placeholder="Pelaaja 1">
+      <div id="party-setup" style="display:none;">
+        <h3>Syötä pelaajien nimet:</h3>
+        <div id="player-inputs">
+          <input type="text" placeholder="Pelaaja 1">
+        </div>
+        <button onclick="addPlayerInput()">Lisää pelaaja</button>
       </div>
-      <button onclick="addPlayerInput()">Lisää pelaaja</button>
+
+      <h3>Kierrosten määrä: <span id="roundCountDisplay">5</span></h3>
+      <input type="range" id="roundCountInput" min="1" max="10" value="5" />
+
+      <button onclick="startSelectedMode()">Aloita peli</button>
     </div>
 
-    <h3>Kierrosten määrä: <span id="roundCountDisplay">5</span></h3>
-    <input type="range" id="roundCountInput" min="1" max="10" value="5" />
+    <!-- Pelinäkymä -->
+    <div id="game-container" style="display: none;">
+      <h2>Guess the song?</h2>
 
-    <button onclick="startSelectedMode()">Aloita peli</button>
-  </div>
+      <img id="play-logo" src="spotiquiz.jpg" alt="Play" onclick="togglePlayPause()">
+      <p id="play-instruction">Press the logo to play/pause</p>
 
-  <!-- Pelinäkymä -->
-  <div id="game-container" style="display: none;">
-    <h2>Guess the song?</h2>
+      <audio id="audioPlayer"></audio>
 
-    <img id="play-logo" src="spotiquiz.jpg" alt="Play" onclick="togglePlayPause()">
-    <p id="play-instruction">Press the logo to play/pause</p>
+      <div id="options"></div>
+      <p id="current-player" style="font-weight: bold; font-size: 1.2em;"></p>
+      <div id="result"></div>
 
-    <audio id="audioPlayer"></audio>
-
-    <div id="options"></div>
-    <p id="current-player" style="font-weight: bold; font-size: 1.2em;"></p>
-    <div id="result"></div>
-
-    <button onclick="window.location.href='game.html'">Takaisin valintaan</button>
-  </div>
-
-  <!-- Lopputulos -->
-  <div id="end-screen" style="display: none;">
-    <h2>Game Over</h2>
-    <div>
-      <p id="winner">Winner:</p>
-      <ul id="score-list"></ul>
+      <button onclick="window.location.href='game.html'">Takaisin valintaan</button>
     </div>
 
-    <button onclick="location.reload()">New Game</button>
-    <button onclick="goToMenu()">Quit Game</button>
-  </div>
+    <!-- Lopputulos -->
+    <div id="end-screen" style="display: none;">
+      <h2>Game Over</h2>
+      <div>
+        <p id="winner">Winner:</p>
+        <ul id="score-list"></ul>
+      </div>
+
+      <button onclick="location.reload()">New Game</button>
+      <button onclick="goToMenu()">Quit Game</button>
+    </div>
+
+  </main>
 
   <script src="game.js"></script>
   <script>
