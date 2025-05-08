@@ -8,14 +8,13 @@
 </head>
 <body>
 
+  <!-- Takaisin-nappi + otsikko (wrapperin ulkopuolella) -->
+  <div id="game-header" style="display: none;">
+    <button id="back-button" onclick="goToMenu()">←</button>
+    <h2 id="view-title">Guess the song?</h2>
+  </div>
+
   <main id="wrapper">
-
-    <!-- Takaisin-nappi + otsikko -->
-    <div id="game-header" style="display: none;">
-      <button id="back-button" onclick="goToMenu()">←</button>
-      <h2 id="view-title">Guess the song?</h2>
-    </div>
-
     <!-- Pelin aloitusnäkymä -->
     <div id="setup">
       <h2>Valitse pelitila</h2>
