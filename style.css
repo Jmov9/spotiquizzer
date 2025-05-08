@@ -5,6 +5,7 @@ body {
     background-color: #f4f4f4;
     color: #222;
     text-align: center;
+    position: relative;
   }
   
   button {
@@ -25,15 +26,39 @@ body {
     background-color: #159c45;
   }
   
+  /* Korosta valittu pelitila */
+  .selected-mode {
+    background-color: #128c3a !important;
+  }
+  
+  /* Pelaajasyöttökenttä (sama koko kuin napit) */
+  #party-setup input[type="text"] {
+    width: 100%;
+    padding: 1em;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0.5em 0;
+    box-sizing: border-box;
+  }
+  
+  /* Kierrosmäärä */
+  #roundCountDisplay {
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 0.3em;
+  }
+  
+  #roundCountInput {
+    width: 60%;
+    margin: 0.5em auto;
+    display: block;
+  }
+  
   /* Audio */
   audio {
     max-width: 100%;
     margin-top: 1em;
-  }
-  
-  /* Round info */
-  #roundCountDisplay {
-    font-weight: bold;
   }
   
   /* Vastausvaihtoehdot container */
@@ -78,6 +103,22 @@ body {
     padding: 0;
   }
   
+  /* Vasen yläkulman takaisinnappi */
+  #back-button {
+    position: absolute;
+    top: 1em;
+    left: 1em;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #1db954;
+  }
+  
+  #back-button:hover {
+    color: #159c45;
+  }
+  
   /* 💻 Desktop ja tablet-näytöt */
   @media screen and (min-width: 768px) {
     body {
@@ -103,9 +144,13 @@ body {
       align-items: center;
     }
   
-    #party-setup input {
-      width: 100%;
-      padding: 0.5em;
+    #party-setup input[type="text"] {
+      max-width: 300px;
+      margin: 0.5em auto;
+    }
+  
+    #roundCountInput {
+      width: 50%;
     }
   
     #game-container,

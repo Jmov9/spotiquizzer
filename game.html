@@ -6,12 +6,15 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <!-- Takaisin-nappi -->
+  <button id="back-button" onclick="goToMenu()">←</button>
+
   <div id="setup">
     <h2>Valitse pelitila</h2>
-    <button onclick="goToMenu()" style="margin-top: 1em;">🏠 Palaa valikkoon</button>
 
-    <button onclick="startSolo()">🎧 Solo</button>
-    <button onclick="showPartySetup()">🎉 Party</button>
+    <button id="solo-btn" onclick="selectMode('solo')"> Solo</button>
+    <button id="party-btn" onclick="selectMode('party')"> Party</button>
 
     <div id="party-setup" style="display:none;">
       <h3>Syötä pelaajien nimet:</h3>
@@ -19,11 +22,12 @@
         <input type="text" placeholder="Pelaaja 1">
       </div>
       <button onclick="addPlayerInput()">Lisää pelaaja</button>
-      <div><button onclick="startParty()">Aloita peli</button></div>
     </div>
 
     <h3>Kierrosten määrä: <span id="roundCountDisplay">5</span></h3>
     <input type="range" id="roundCountInput" min="1" max="10" value="5" />
+
+    <button onclick="startSelectedMode()">Aloita peli</button>
   </div>
 
   <div id="game-container" style="display: none;">
@@ -31,19 +35,16 @@
 
     <!-- Logo toimii play/pause-nappina -->
     <img id="play-logo" src="spotiquiz.jpg" alt="Play" onclick="togglePlayPause()">
-
-    <!-- Ohjeteksti logon alle -->
-    <p style="text-align: center; font-size: 0.9em; margin-bottom: 1em;">🎵 Press the logo to play/pause</p>
+    <p id="play-instruction">🎵 Press the logo to play/pause</p>
 
     <!-- Piilotettu soitin -->
     <audio id="audioPlayer"></audio>
 
     <div id="options"></div>
-
     <p id="current-player" style="font-weight: bold; font-size: 1.2em;"></p>
     <div id="result"></div>
 
-    <button onclick="window.location.href='game.html'">⬅️ Takaisin valintaan</button>
+    <button onclick="window.location.href='game.html'"> Takaisin valintaan</button>
   </div>
 
   <div id="end-screen" style="display: none;">
@@ -53,8 +54,8 @@
       <ul id="score-list"></ul>
     </div>
 
-    <button onclick="location.reload()">🔄 New Game</button>
-    <button onclick="window.location.href='index.html'">🏠 Quit Game</button>
+    <button onclick="location.reload()"> New Game</button>
+    <button onclick="window.location.href='index.html'"> Quit Game</button>
   </div>
 
   <script src="game.js"></script>
@@ -65,6 +66,33 @@
         window.location.href = `index.html?access_token=${token}`;
       } else {
         window.location.href = 'index.html';
+      }
+    }
+
+    // Valinnan logiikka
+    let selectedMode = null;
+
+    function selectMode(mode) {
+      selectedMode = mode;
+      document.getElementById('solo-btn').classList.remove('selected-mode');
+      document.getElementById('party-btn').classList.remove('selected-mode');
+
+      if (mode === 'solo') {
+        document.getElementById('solo-btn').classList.add('selected-mode');
+        document.getElementById('party-setup').style.display = 'none';
+      } else {
+        document.getElementById('party-btn').classList.add('selected-mode');
+        document.getElementById('party-setup').style.display = 'block';
+      }
+    }
+
+    function startSelectedMode() {
+      if (selectedMode === 'solo') {
+        startSolo();
+      } else if (selectedMode === 'party') {
+        startParty();
+      } else {
+        alert('Valitse ensin pelitila!');
       }
     }
   </script>

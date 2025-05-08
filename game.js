@@ -14,17 +14,39 @@ let queriesDone = 0;
 let playerScores = {};
 let roundsPlayed = 0;
 let maxRounds = 10;
+let selectedMode = null;
 
 roundSlider.addEventListener('input', () => {
   roundDisplay.innerText = roundSlider.value;
 });
+
 function getSelectedRoundCount() {
   return parseInt(roundSlider.value);
 }
 
-// ==============================
-// PELITILAN ASETUKSET
-// ==============================
+function selectMode(mode) {
+  selectedMode = mode;
+  document.getElementById('solo-btn').classList.remove('selected-mode');
+  document.getElementById('party-btn').classList.remove('selected-mode');
+
+  if (mode === 'solo') {
+    document.getElementById('solo-btn').classList.add('selected-mode');
+    document.getElementById('party-setup').style.display = 'none';
+  } else {
+    document.getElementById('party-btn').classList.add('selected-mode');
+    document.getElementById('party-setup').style.display = 'block';
+  }
+}
+
+function startSelectedMode() {
+  if (selectedMode === 'solo') {
+    startSolo();
+  } else if (selectedMode === 'party') {
+    startParty();
+  } else {
+    alert("Valitse ensin pelitila.");
+  }
+}
 
 function startSolo() {
   localStorage.setItem('mode', 'solo');
@@ -35,10 +57,6 @@ function startSolo() {
   roundsPlayed = 0;
   maxRounds = getSelectedRoundCount();
   startGame();
-}
-
-function showPartySetup() {
-  document.getElementById('party-setup').style.display = 'block';
 }
 
 function addPlayerInput() {
@@ -71,10 +89,6 @@ function startParty() {
   startGame();
 }
 
-// ==============================
-// API JA PELILOGIIKKA
-// ==============================
-
 function shuffle(arr) {
   return arr.sort(() => Math.random() - 0.5);
 }
@@ -102,8 +116,8 @@ function handleAnswer(selectedTrack) {
   }
 
   result.innerText = isCorrect
-    ? "✅ Oikein!"
-    : `❌ Väärin! Oikea oli: ${currentCorrectTrack.title} – ${currentCorrectTrack.artist.name}`;
+    ? "Oikein!"
+    : `Väärin! Oikea oli: ${currentCorrectTrack.title} – ${currentCorrectTrack.artist.name}`;
 
   answeredThisRound.push(name);
 
@@ -137,13 +151,13 @@ function presentQuestion() {
 
   const validTracks = allTracks.filter(t => t.preview);
   if (validTracks.length < 4) {
-    result.innerText = "⚠️ Ei tarpeeksi esikuunneltavia kappaleita.";
+    result.innerText = "Ei tarpeeksi esikuunneltavia kappaleita.";
     return;
   }
 
   if (localStorage.getItem('mode') === 'party') {
     const playerName = players[currentPlayerIndex];
-    currentPlayerLabel.innerText = `🎮 ${playerName}, sinun vuoro!`;
+    currentPlayerLabel.innerText = `${playerName}, sinun vuoro!`;
   } else {
     currentPlayerLabel.innerText = '';
   }
@@ -157,7 +171,6 @@ function presentQuestion() {
   audio.src = currentCorrectTrack.preview;
   document.getElementById('play-logo').classList.remove('playing');
 
-  // Vastausvaihtoehdot
   choices.forEach(track => {
     const btn = document.createElement('button');
     btn.innerText = `${track.title} – ${track.artist.name}`;
@@ -223,8 +236,8 @@ function endGame() {
   const winners = sorted.filter(([_, score]) => score === topScore);
 
   const winnerText = winners.length > 1
-    ? `🤝 Tasapeli: ${winners.map(w => w[0]).join(' & ')}`
-    : `🏆 Voittaja: ${winners[0][0]}`;
+    ? `Tasapeli: ${winners.map(w => w[0]).join(' & ')}`
+    : `Voittaja: ${winners[0][0]}`;
 
   document.getElementById('winner').innerText = winnerText;
 
