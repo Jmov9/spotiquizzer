@@ -1,4 +1,4 @@
-/* Globaalit perusasetukset */
+/* Reset & perusasetukset */
 *,
 *::before,
 *::after {
@@ -16,7 +16,7 @@ body {
   position: relative;
 }
 
-/* Keskittävä wrapper */
+/* Wrapper sisältää näkymät */
 #wrapper {
   display: flex;
   flex-direction: column;
@@ -26,44 +26,36 @@ body {
   padding: 2em 1em;
 }
 
-/* Header: takaisin-nappi + otsikko */
-#game-header {
-  display: flex;
-  align-items: center;
-  gap: 1em;
-  margin-bottom: 1em;
-  width: 100%;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 0.5em;
-}
-
-/* Takaisin-nappi (nyt headerin sisällä) */
+/* Takaisin-nappi (bodyssä) */
 #back-button {
+  position: fixed;
+  top: 1.2em;
+  left: 1.2em;
+  z-index: 10;
   background: none;
   border: none;
   font-size: 1.8em;
   cursor: pointer;
   color: #1db954;
-  padding: 0.2em 0.5em;
-  flex-shrink: 0;
+  padding: 0;
 }
 
 #back-button:hover {
   color: #159c45;
 }
 
-/* Otsikko */
+/* Peliotsikko laatikon ulkopuolella */
 #view-title {
   font-size: 1.8em;
   font-weight: bold;
-  margin: 0;
+  margin-bottom: 1em;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
   text-align: left;
-  flex-grow: 1;
 }
 
-/* Korttirunko kaikille näkymille */
+/* Korttirunko (setup, peli, loppu) */
 #setup,
 #game-container,
 #end-screen {
@@ -79,7 +71,7 @@ body {
   gap: 1.5em;
 }
 
-/* Nappien perusmuotoilu */
+/* Napit */
 button {
   display: block;
   width: 100%;
@@ -210,7 +202,7 @@ audio {
   padding: 0;
 }
 
-/* Desktop- ja tablet-näytöt */
+/* Desktop-näytöt */
 @media screen and (min-width: 768px) {
   #wrapper {
     max-width: 600px;
@@ -238,10 +230,5 @@ audio {
 
   #roundCountInput {
     width: 50%;
-  }
-
-  #game-header {
-    max-width: 600px;
-    padding-left: 1em;
   }
 }
