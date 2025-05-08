@@ -3,16 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>SpotiQuizzer</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Takaisin-nappi kuuluu bodyyn, ei wrapperiin -->
+  <!-- Takaisin-nappi erillisenä -->
   <button id="back-button" onclick="goToMenu()">←</button>
 
   <main id="wrapper">
+    <!-- Ulkoinen otsikko pelin aikana -->
+    <h2 id="view-title" style="display: none;">Guess the song?</h2>
+
     <!-- Pelin aloitusnäkymä -->
     <div id="setup">
       <h2>Valitse pelitila</h2>
@@ -36,8 +38,6 @@
 
     <!-- Pelinäkymä -->
     <div id="game-container" style="display: none;">
-      <h2>Guess the song?</h2>
-
       <img id="play-logo" src="spotiquiz.jpg" alt="Play" onclick="togglePlayPause()">
       <p id="play-instruction">Press the logo to play/pause</p>
 
@@ -70,7 +70,16 @@
       const base = 'index.html';
       window.location.href = token ? `${base}?access_token=${token}` : base;
     }
+
+    // Näyttää otsikon kun peli käynnistyy
+    document.addEventListener('DOMContentLoaded', () => {
+      const viewTitle = document.getElementById('view-title');
+      const container = document.getElementById('game-container');
+      const observer = new MutationObserver(() => {
+        viewTitle.style.display = container.style.display === 'none' ? 'none' : 'block';
+      });
+      observer.observe(container, { attributes: true, attributeFilter: ['style'] });
+    });
   </script>
 </body>
 </html>
-
