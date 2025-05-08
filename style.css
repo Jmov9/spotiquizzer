@@ -193,14 +193,22 @@ audio {
 
 /* Takaisin-nappi kiinteänä ylhäällä */
 #back-button {
-    background: none;
     border: none;
-    font-size: 1.8em;
+    background: none;
+    font-size: 1.8rem;
     cursor: pointer;
-    padding: 0;
-    margin: 1em;
-    color: #1db954;
+    padding: 0.5rem;
+    margin: 1rem 0 0 1rem; /* ylös ja vasemmalle */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
+  
+  .material-symbols-outlined {
+    font-size: 24px;
+  }
+  
+
 /* Otsikko */
 #view-title {
   font-size: 1.8em;
