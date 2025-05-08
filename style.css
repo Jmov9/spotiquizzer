@@ -16,7 +16,7 @@ body {
   position: relative;
 }
 
-/* 🔲 Wrapper joka keskittää kaiken */
+/* 🔲 Wrapper keskittää kortin */
 #wrapper {
   display: flex;
   flex-direction: column;
@@ -26,7 +26,7 @@ body {
   padding: 2em 1em;
 }
 
-/* 🧱 Korttirunko kaikille näkymille */
+/* 🧱 Kortit: setup, peli, lopetus */
 #setup,
 #game-container,
 #end-screen {
@@ -35,8 +35,8 @@ body {
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   margin: 1.5em auto;
-  width: 100%;
-  max-width: min(95%, 500px);
+  width: 95%;
+  max-width: 480px;
   display: flex;
   flex-direction: column;
   gap: 1.5em;
@@ -67,7 +67,7 @@ button:hover {
   box-shadow: 0 0 0 2px rgba(18, 140, 60, 0.3);
 }
 
-/* 👤 Pelaajasyöttö */
+/* 👥 Pelaajasyöttö */
 #party-setup input[type="text"] {
   width: 100%;
   padding: 1em;
@@ -124,7 +124,7 @@ audio {
   margin-bottom: 1.5em;
 }
 
-/* ✅ Vastausvaihtoehdot listamaisina */
+/* ✅ Vastausvaihtoehdot listana */
 #options {
   margin-top: 1.5em;
 }
@@ -173,7 +173,7 @@ audio {
   padding: 0;
 }
 
-/* 🔙 Takaisin-nappi */
+/* 🔙 Takaisin-nappi sivun yläkulmassa */
 #back-button {
   position: absolute;
   top: 1em;
