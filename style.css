@@ -130,35 +130,34 @@ audio {
 }
 
 .answer-option {
-  background: white;
-  border-bottom: 1px solid #ccc;
-  padding: 1.2em 1em;
-  width: 100%;
-  text-align: left;
+  background-color: #1db954;
+  color: white;
+  border: none;
+  padding: 1em;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 1em;
-  border-radius: 0;
-  transition: background 0.2s ease;
-  margin: 0;
-}
-
-.answer-option:first-child {
-  border-top: 1px solid #ccc;
+  margin: 0.5em 0;
+  width: 100%;
+  transition: background-color 0.2s;
+  font-weight: bold;
+  text-align: center;
 }
 
 .answer-option:hover {
-  background: #f7f7f7;
+  background-color: #159c45;
 }
 
 .answer-option.selected {
   background-color: #e6f0ff;
+  color: #222; /* ✅ Teksti näkyviin valitussa */
   border-left: 4px solid #3399ff;
   font-weight: bold;
   position: relative;
 }
 
 .answer-option.selected::after {
-  content: "\2714";
+  content: "✔";
   position: absolute;
   right: 1em;
   top: 50%;
@@ -167,13 +166,32 @@ audio {
   font-size: 1.2em;
 }
 
+/* Takaisin valintaan -nappi (pienempi) */
+#back-to-selection {
+  width: 60%;
+  margin: 2em auto 0;
+  font-size: 1em;
+  padding: 0.8em 1em;
+  border-radius: 8px;
+  background-color: #1db954;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#back-to-selection:hover {
+  background-color: #159c45;
+}
+
 /* Lopputuloksen lista */
 #end-screen ul {
   list-style: none;
   padding: 0;
 }
 
-/* Takaisin-nappi */
+/* Takaisin-nappi (wrapperin ulkopuolella) */
 #back-button {
   position: fixed;
   top: 1.2em;
@@ -197,7 +215,7 @@ audio {
   margin-bottom: 0.5em;
 }
 
-/* Responsiivisuus */
+/* Desktop / Tablet */
 @media screen and (min-width: 768px) {
   #wrapper {
     max-width: 600px;
