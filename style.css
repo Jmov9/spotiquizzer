@@ -123,6 +123,78 @@ body {
   #back-button:hover {
     color: #159c45;
   }
+  /* --- Uudet korttirakenteet ja keskitykset --- */
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  
+  #setup,
+  #game-container,
+  #end-screen {
+    background-color: #eee;
+    padding: 2em 1.5em;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin: auto;
+    max-width: 90%;
+  }
+  
+  /* --- Napit korttityylisiksi (väliaikaisesti) --- */
+  
+  button {
+    border-radius: 12px;
+    font-weight: bold;
+  }
+  
+  /* --- Takaisin-nuoli (placeholder) --- */
+  #back-button {
+    font-size: 1.5em;
+    left: 1em;
+    top: 1em;
+    color: #1db954;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.2em;
+  }
+  
+  /* --- Listamaiset vastausvaihtoehdot --- */
+  
+  .answer-option {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 1em;
+    margin: 0.5em 0;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-align: left;
+  }
+  
+  .answer-option:hover {
+    background: #f0f0f0;
+  }
+  
+  .answer-option.selected {
+    background-color: #cce4ff;
+    border-color: #3399ff;
+    position: relative;
+  }
+  
+  .answer-option.selected::after {
+    content: "✔";
+    position: absolute;
+    right: 1em;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #3399ff;
+    font-size: 1.2em;
+  }
+  
   
   /* 💻 Desktop ja tablet-näytöt */
   @media screen and (min-width: 768px) {
