@@ -15,7 +15,7 @@ let playerScores = {};
 let roundsPlayed = 0;
 let maxRounds = 10;
 
-// ⏱ Päivitä kierrosmäärän näyttö liukukytkimestä
+// Kierrosmäärän päivitys
 roundSlider.addEventListener('input', () => {
   roundDisplay.innerText = roundSlider.value;
 });
@@ -73,7 +73,7 @@ function startParty() {
 }
 
 // ==============================
-// API JA LOGIIKKA
+// API JA PELILOGIIKKA
 // ==============================
 
 function shuffle(arr) {
@@ -155,8 +155,14 @@ function presentQuestion() {
   }
 
   audio.src = currentCorrectTrack.preview;
-  audio.play();
 
+  // ▶️ Play-nappi
+  const playBtn = document.createElement('button');
+  playBtn.innerText = '▶️ Soita kappale';
+  playBtn.onclick = () => audio.play();
+  optionsDiv.appendChild(playBtn);
+
+  // Vastausvaihtoehdot
   choices.forEach(track => {
     const btn = document.createElement('button');
     btn.innerText = `${track.title} – ${track.artist.name}`;
@@ -206,8 +212,8 @@ function endGame() {
   const winners = sorted.filter(([_, score]) => score === topScore);
 
   const winnerText = winners.length > 1
-    ? `🤝 Draw: ${winners.map(w => w[0]).join(' & ')}`
-    : `🏆 Winner: ${winners[0][0]}`;
+    ? `🤝 Tasapeli: ${winners.map(w => w[0]).join(' & ')}`
+    : `🏆 Voittaja: ${winners[0][0]}`;
 
   document.getElementById('winner').innerText = winnerText;
 
@@ -215,7 +221,7 @@ function endGame() {
   scoreList.innerHTML = '';
   for (const [name, score] of entries) {
     const li = document.createElement('li');
-    li.innerText = `${name}: ${score} points`;
+    li.innerText = `${name}: ${score} pistettä`;
     scoreList.appendChild(li);
   }
 
