@@ -14,7 +14,6 @@ const redirect_uri = process.env.REDIRECT_URI;
 app.get('/login', (req, res) => {
   const scope = 'user-read-private playlist-read-private playlist-read-collaborative user-top-read';
 
-
   const params = querystring.stringify({
     response_type: 'code',
     client_id,
@@ -43,12 +42,7 @@ app.get('/callback', (req, res) => {
   request.post(authOptions, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       const { access_token, refresh_token } = body;
-      res.redirect(`https://jmov9.github.io/spotiquizzer/stats.html?access_token=${access_token}`);
-
-
-    
-
-  
+      res.redirect(`https://jmov9.github.io/spotiquizzer/index.html?access_token=${access_token}`);
     } else {
       res.send('Error during token exchange');
     }
