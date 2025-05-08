@@ -192,8 +192,9 @@ audio {
 }
 
 /* Takaisin-nappi kiinteänä ylhäällä */
+/* Takaisin-nappi kiinteänä ylhäällä */
 #back-button {
-    position: fixed;
+    position: absolute;       /* Ei fixed! */
     top: 1rem;
     left: 1rem;
     z-index: 10;
@@ -203,8 +204,15 @@ audio {
     font-size: 1.8rem;
     line-height: 1;
     cursor: pointer;
-    color:#128c3a
+    color: #128c3a;
   }
+  
+  /* Asetetaan bodyyn relative, että absolute-nappi kohdistuu siihen */
+  body {
+    position: relative;
+  }
+  
+
   
   .material-symbols-outlined {
     font-size: 1.8rem;
