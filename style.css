@@ -158,7 +158,7 @@ audio {
 }
 
 .answer-option.selected::after {
-  content: "✔";
+  content: "\2714";
   position: absolute;
   right: 1em;
   top: 50%;
