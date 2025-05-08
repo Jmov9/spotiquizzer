@@ -226,4 +226,6 @@ function endGame() {
   }
 
   endScreen.style.display = 'block';
+  document.getElementById('endMusic').play();
+
 }
