@@ -66,33 +66,6 @@
       const base = 'index.html';
       window.location.href = token ? `${base}?access_token=${token}` : base;
     }
-
-    // Pelitilan valinta ja aloitus
-    let selectedMode = null;
-
-    function selectMode(mode) {
-      selectedMode = mode;
-      document.getElementById('solo-btn').classList.remove('selected-mode');
-      document.getElementById('party-btn').classList.remove('selected-mode');
-
-      if (mode === 'solo') {
-        document.getElementById('solo-btn').classList.add('selected-mode');
-        document.getElementById('party-setup').style.display = 'none';
-      } else {
-        document.getElementById('party-btn').classList.add('selected-mode');
-        document.getElementById('party-setup').style.display = 'block';
-      }
-    }
-
-    function startSelectedMode() {
-      if (selectedMode === 'solo') {
-        startSolo();
-      } else if (selectedMode === 'party') {
-        startParty();
-      } else {
-        alert('Valitse ensin pelitila!');
-      }
-    }
   </script>
 </body>
 </html>
