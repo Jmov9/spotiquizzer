@@ -10,11 +10,12 @@
   <!-- Takaisin-nappi -->
   <button id="back-button" onclick="goToMenu()">←</button>
 
+  <!-- Pelin aloitusnäkymä -->
   <div id="setup">
     <h2>Valitse pelitila</h2>
 
-    <button id="solo-btn" onclick="selectMode('solo')"> Solo</button>
-    <button id="party-btn" onclick="selectMode('party')"> Party</button>
+    <button id="solo-btn" onclick="selectMode('solo')">Solo</button>
+    <button id="party-btn" onclick="selectMode('party')">Party</button>
 
     <div id="party-setup" style="display:none;">
       <h3>Syötä pelaajien nimet:</h3>
@@ -30,23 +31,23 @@
     <button onclick="startSelectedMode()">Aloita peli</button>
   </div>
 
+  <!-- Pelinäkymä -->
   <div id="game-container" style="display: none;">
     <h2>Guess the song?</h2>
 
-    <!-- Logo toimii play/pause-nappina -->
     <img id="play-logo" src="spotiquiz.jpg" alt="Play" onclick="togglePlayPause()">
-    <p id="play-instruction">🎵 Press the logo to play/pause</p>
+    <p id="play-instruction">Press the logo to play/pause</p>
 
-    <!-- Piilotettu soitin -->
     <audio id="audioPlayer"></audio>
 
     <div id="options"></div>
     <p id="current-player" style="font-weight: bold; font-size: 1.2em;"></p>
     <div id="result"></div>
 
-    <button onclick="window.location.href='game.html'"> Takaisin valintaan</button>
+    <button onclick="window.location.href='game.html'">Takaisin valintaan</button>
   </div>
 
+  <!-- Lopputulos -->
   <div id="end-screen" style="display: none;">
     <h2>Game Over</h2>
     <div>
@@ -54,22 +55,19 @@
       <ul id="score-list"></ul>
     </div>
 
-    <button onclick="location.reload()"> New Game</button>
-    <button onclick="window.location.href='index.html'"> Quit Game</button>
+    <button onclick="location.reload()">New Game</button>
+    <button onclick="goToMenu()">Quit Game</button>
   </div>
 
   <script src="game.js"></script>
   <script>
     function goToMenu() {
       const token = new URLSearchParams(window.location.search).get('access_token') || localStorage.getItem('access_token');
-      if (token) {
-        window.location.href = `index.html?access_token=${token}`;
-      } else {
-        window.location.href = 'index.html';
-      }
+      const base = 'index.html';
+      window.location.href = token ? `${base}?access_token=${token}` : base;
     }
 
-    // Valinnan logiikka
+    // Pelitilan valinta ja aloitus
     let selectedMode = null;
 
     function selectMode(mode) {

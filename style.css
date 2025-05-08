@@ -1,4 +1,4 @@
-/* 🎯 Mobile-first (puhelimet oletuksena) */
+/*  Mobile-first (puhelimet oletuksena) */
 body {
     font-family: sans-serif;
     margin: 1em;
@@ -27,9 +27,14 @@ body {
   }
   
   /* Korosta valittu pelitila */
+
   .selected-mode {
     background-color: #128c3a !important;
+    box-shadow: 0 0 0 2px rgba(18, 140, 60, 0.3);
+    font-weight: bold;
   }
+  
+
   
   /* Pelaajasyöttökenttä (sama koko kuin napit) */
   #party-setup input[type="text"] {
