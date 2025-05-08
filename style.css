@@ -134,6 +134,24 @@ audio {
 #options {
   margin-top: 1.5em;
 }
+#back-to-selection {
+    width: 60%;
+    margin: 2em auto 0;
+    font-size: 1em;
+    padding: 0.8em 1em;
+    border-radius: 8px;
+    background-color: #1db954;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #back-to-selection:hover {
+    background-color: #159c45;
+  }
+  
 
 .answer-option {
     display: block;
