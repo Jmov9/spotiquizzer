@@ -191,12 +191,11 @@ audio {
   padding: 0;
 }
 
-/* Takaisin-nappi kiinteänä ylhäällä */
-/* Takaisin-nappi kiinteänä ylhäällä */
+/* Yleinen tyyli back-napille isoille näytöille */
 #back-button {
-    position: absolute;       /* Ei fixed! */
-    top: 0.5rem!important;
-    left: 0.5rem!important; 
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
     z-index: 10;
     background: none;
     border: none;
@@ -205,7 +204,19 @@ audio {
     line-height: 1;
     cursor: pointer;
     color: #128c3a;
-    
+  }
+  
+  .material-symbols-outlined {
+    font-size: 1.8rem;
+  }
+  /* Mobiilinäytöt: tarkennetaan paikka ettei keskity väärin */
+@media screen and (max-width: 767px) {
+    #back-button {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      transform: none;
+    }
   }
   
   /* Asetetaan bodyyn relative, että absolute-nappi kohdistuu siihen */
