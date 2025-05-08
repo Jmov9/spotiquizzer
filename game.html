@@ -8,13 +8,11 @@
 </head>
 <body>
 
-  <!-- Takaisin-nappi + otsikko (wrapperin ulkopuolella) -->
-  <div id="game-header" style="display: none;">
-    <button id="back-button" onclick="goToMenu()">←</button>
-    <h2 id="view-title">Guess the song?</h2>
-  </div>
+  <!-- Takaisin-nappi pysyvästi näkyvissä -->
+  <button id="back-button" onclick="goToMenu()">←</button>
 
   <main id="wrapper">
+
     <!-- Pelin aloitusnäkymä -->
     <div id="setup">
       <h2>Valitse pelitila</h2>
@@ -38,6 +36,8 @@
 
     <!-- Pelinäkymä -->
     <div id="game-container" style="display: none;">
+      <h2>Guess the song?</h2>
+
       <img id="play-logo" src="spotiquiz.jpg" alt="Play" onclick="togglePlayPause()">
       <p id="play-instruction">Press the logo to play/pause</p>
 
@@ -61,6 +61,7 @@
       <button onclick="location.reload()">New Game</button>
       <button onclick="goToMenu()">Quit Game</button>
     </div>
+
   </main>
 
   <script src="game.js"></script>
@@ -70,16 +71,6 @@
       const base = 'index.html';
       window.location.href = token ? `${base}?access_token=${token}` : base;
     }
-
-    // Näyttää otsikon + back-napin kun peli käynnistyy
-    document.addEventListener('DOMContentLoaded', () => {
-      const header = document.getElementById('game-header');
-      const container = document.getElementById('game-container');
-      const observer = new MutationObserver(() => {
-        header.style.display = container.style.display === 'none' ? 'none' : 'flex';
-      });
-      observer.observe(container, { attributes: true, attributeFilter: ['style'] });
-    });
   </script>
 </body>
 </html>
