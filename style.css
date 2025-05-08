@@ -130,7 +130,7 @@ audio {
 }
 
 .answer-option {
-  background: white;
+  background: black;
   border-bottom: 1px solid #ccc;
   padding: 1.2em 1em;
   text-align: left;
