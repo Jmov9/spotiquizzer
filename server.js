@@ -43,7 +43,8 @@ app.get('/callback', (req, res) => {
   request.post(authOptions, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       const { access_token, refresh_token } = body;
-      res.redirect(`https://jmov9.github.io/spotiquizzer/menu.html?access_token=${access_token}`);
+      res.redirect(`https://jmov9.github.io/spotiquizzer/stats.html?access_token=${access_token}`);
+
 
     
 

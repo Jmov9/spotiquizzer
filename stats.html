@@ -22,7 +22,19 @@
   </select>
 
   <br><br>
-  <button id="backToMenu">🏠 Palaa valikkoon</button>
+  <button onclick="goToMenu()">🏠 Palaa valikkoon</button>
+
+<script>
+  function goToMenu() {
+    const token = new URLSearchParams(window.location.search).get('access_token');
+    if (token) {
+      window.location.href = `index.html?access_token=${token}`;
+    } else {
+      window.location.href = 'index.html'; // fallback jos token puuttuu
+    }
+  }
+</script>
+
 
   <script src="stats.js"></script>
   <script>
