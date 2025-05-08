@@ -1,3 +1,4 @@
+<!-- ✅ Korjattu HTML (täysin yhteensopiva JS:n ja CSS:n kanssa) -->
 <!DOCTYPE html>
 <html lang="fi">
 <head>
@@ -8,17 +9,16 @@
 </head>
 <body>
 
-  <!-- Takaisin-nappi erillisenä -->
-  <button id="back-button" onclick="goToMenu()">←</button>
+  <!-- Takaisin-nappi pysyvästi näkyvissä -->
+  <button id="back-button" onclick="goToMenu()">&larr;</button>
 
   <main id="wrapper">
-    <!-- Ulkoinen otsikko pelin aikana -->
+    <!-- Otsikko, näytetään vain pelin aikana -->
     <h2 id="view-title" style="display: none;">Guess the song?</h2>
 
-    <!-- Pelin aloitusnäkymä -->
+    <!-- Alkunäkymä -->
     <div id="setup">
       <h2>Valitse pelitila</h2>
-
       <button id="solo-btn" onclick="selectMode('solo')">Solo</button>
       <button id="party-btn" onclick="selectMode('party')">Party</button>
 
@@ -68,10 +68,10 @@
     function goToMenu() {
       const token = new URLSearchParams(window.location.search).get('access_token') || localStorage.getItem('access_token');
       const base = 'index.html';
-      window.location.href = token ? ${base}?access_token=${token} : base;
+      window.location.href = token ? `${base}?access_token=${token}` : base;
     }
 
-    // Näyttää otsikon kun peli käynnistyy
+    // Näyttää otsikon, kun peli näkyvissä
     document.addEventListener('DOMContentLoaded', () => {
       const viewTitle = document.getElementById('view-title');
       const container = document.getElementById('game-container');
@@ -83,4 +83,3 @@
   </script>
 </body>
 </html>
- 

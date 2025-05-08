@@ -1,3 +1,4 @@
+// Korjattu JavaScript-tiedosto toimivaksi
 const audio = document.getElementById('audioPlayer');
 const optionsDiv = document.getElementById('options');
 const result = document.getElementById('result');
@@ -52,6 +53,7 @@ function startSolo() {
   localStorage.setItem('mode', 'solo');
   document.getElementById('setup').style.display = 'none';
   document.getElementById('game-container').style.display = 'block';
+  document.getElementById('view-title').style.display = 'block';
   players = ['solo'];
   playerScores = { solo: 0 };
   roundsPlayed = 0;
@@ -63,7 +65,7 @@ function addPlayerInput() {
   const container = document.getElementById('player-inputs');
   const input = document.createElement('input');
   input.type = 'text';
-  input.placeholder = Pelaaja ${container.children.length + 1};
+  input.placeholder = `Pelaaja ${container.children.length + 1}`;
   container.appendChild(input);
 }
 
@@ -86,6 +88,7 @@ function startParty() {
 
   document.getElementById('setup').style.display = 'none';
   document.getElementById('game-container').style.display = 'block';
+  document.getElementById('view-title').style.display = 'block';
   startGame();
 }
 
@@ -101,7 +104,7 @@ function fetchDeezerData(query, callback) {
     delete window[callbackName];
     script.remove();
   };
-  script.src = https://api.deezer.com/search?q=${encodeURIComponent(query)}&limit=10&output=jsonp&callback=${callbackName};
+  script.src = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&limit=10&output=jsonp&callback=${callbackName}`;
   document.body.appendChild(script);
 }
 
@@ -117,7 +120,7 @@ function handleAnswer(selectedTrack) {
 
   result.innerText = isCorrect
     ? "Oikein!"
-    : Väärin! Oikea oli: ${currentCorrectTrack.title} – ${currentCorrectTrack.artist.name};
+    : `Väärin! Oikea oli: ${currentCorrectTrack.title} – ${currentCorrectTrack.artist.name}`;
 
   answeredThisRound.push(name);
 
@@ -157,7 +160,7 @@ function presentQuestion() {
 
   if (localStorage.getItem('mode') === 'party') {
     const playerName = players[currentPlayerIndex];
-    currentPlayerLabel.innerText = ${playerName}, sinun vuoro!;
+    currentPlayerLabel.innerText = `${playerName}, sinun vuoro!`;
   } else {
     currentPlayerLabel.innerText = '';
   }
@@ -173,7 +176,8 @@ function presentQuestion() {
 
   choices.forEach(track => {
     const btn = document.createElement('button');
-    btn.innerText = ${track.title} – ${track.artist.name};
+    btn.innerText = `${track.title} – ${track.artist.name}`;
+    btn.classList.add('answer-option');
     btn.onclick = () => handleAnswer(track);
     optionsDiv.appendChild(btn);
   });
@@ -194,7 +198,7 @@ function startGame() {
   while (searchTerms.length < 4) {
     const randomLetter = String.fromCharCode(97 + Math.floor(Math.random() * 26));
     const genre = genres[Math.floor(Math.random() * genres.length)];
-    searchTerms.push(${genre} ${randomLetter});
+    searchTerms.push(`${genre} ${randomLetter}`);
   }
 
   searchTerms.forEach(term => {
@@ -229,6 +233,7 @@ audio.addEventListener('ended', () => {
 function endGame() {
   document.getElementById('game-container').style.display = 'none';
   const endScreen = document.getElementById('end-screen');
+  document.getElementById('view-title').style.display = 'none';
 
   const entries = Object.entries(playerScores);
   const sorted = entries.sort((a, b) => b[1] - a[1]);
@@ -236,8 +241,8 @@ function endGame() {
   const winners = sorted.filter(([_, score]) => score === topScore);
 
   const winnerText = winners.length > 1
-    ? Tasapeli: ${winners.map(w => w[0]).join(' & ')}
-    : Voittaja: ${winners[0][0]};
+    ? `Tasapeli: ${winners.map(w => w[0]).join(' & ')}`
+    : `Voittaja: ${winners[0][0]}`;
 
   document.getElementById('winner').innerText = winnerText;
 
@@ -245,7 +250,7 @@ function endGame() {
   scoreList.innerHTML = '';
   for (const [name, score] of entries) {
     const li = document.createElement('li');
-    li.innerText = ${name}: ${score} pistettä;
+    li.innerText = `${name}: ${score} pistettä`;
     scoreList.appendChild(li);
   }
 
