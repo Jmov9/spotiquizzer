@@ -195,8 +195,8 @@ audio {
 /* Takaisin-nappi kiinteänä ylhäällä */
 #back-button {
     position: absolute;       /* Ei fixed! */
-    top: 1rem;
-    left: 1rem;
+    top: 0,5rem!important;
+    left: 0,5rem!important; 
     z-index: 10;
     background: none;
     border: none;
