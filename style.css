@@ -166,27 +166,33 @@ audio {
 }
 
 #back-button {
-  position: fixed;
-  top: 1.2em;
-  left: 1.2em;
-  z-index: 10;
-  background: none;
-  border: none;
-  font-size: 1.8em;
-  cursor: pointer;
-  color: #1db954;
-  padding: 0;
-}
-
-#back-button:hover {
-  color: #159c45;
-}
+    background: none;
+    border: none;
+    font-size: 1.8em;
+    cursor: pointer;
+    color: #1db954;
+    padding: 0;
+  }
+  #back-button:hover {
+    color: #159c45;
+  }
+  
 
 #view-title {
   font-size: 1.8em;
   font-weight: bold;
   margin-bottom: 0.5em;
 }
+#game-header {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    max-width: 500px;
+    margin: 1em auto 0 auto;
+    padding: 0 1em;
+    justify-content: flex-start;
+  }
+  
 
 @media screen and (min-width: 768px) {
   #wrapper {
