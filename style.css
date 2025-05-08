@@ -193,18 +193,19 @@ audio {
 
 /* Takaisin-nappi kiinteänä ylhäällä */
 #back-button {
-    position: absolute;
-    top: 1.2rem;
-    left: 1.2rem;
-    z-index: 10;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1000;
     background: none;
     border: none;
     padding: 0;
-    margin: 0;
     font-size: 1.8rem;
     line-height: 1;
     cursor: pointer;
   }
+  
+
   
   .material-symbols-outlined {
     font-size: 1.8rem;
