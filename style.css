@@ -157,7 +157,7 @@ audio {
 }
 
 .answer-option {
-  background-color: #FF6668;
+  background-color: #27E18F;
   color: white;
   border: none;
   padding: 1em;
@@ -176,7 +176,7 @@ audio {
 }
 
 .answer-option.selected {
-  background-color: #27E18F;
+  background-color: #FF6668;
   color: #0C120C;
   border-left: 4px solid #0C120C;
   font-weight: bold;
