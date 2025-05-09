@@ -115,6 +115,7 @@ button:hover {
   width: 60%;
   margin: 0.5em auto;
   display: block;
+  cursor: pointer;
 }
 
 /* Logo ja audio */
