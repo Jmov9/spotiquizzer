@@ -116,7 +116,35 @@ button:hover {
   margin: 0.5em auto;
   display: block;
   cursor: pointer;
+  height: 8px;
+  background: #444; /* taustaviivan väri */
+  border-radius: 20px;
+  outline: none;
+  -webkit-appearance: none;
 }
+
+/* Thumb (liukusäätimen pallo) */
+#roundCountInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #27E18F; /* vihreä thumb */
+  cursor: pointer;
+  border: none;
+}
+
+/* Firefoxin tuki */
+#roundCountInput::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #27E18F;
+  cursor: pointer;
+  border: none;
+}
+
 
 /* Logo ja audio */
 audio {
