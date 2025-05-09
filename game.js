@@ -54,6 +54,8 @@ function startSolo() {
   document.getElementById('setup').style.display = 'none';
   document.getElementById('game-container').style.display = 'block';
   document.getElementById('view-title').style.display = 'block';
+  document.getElementById('mode-title').style.display = 'none';
+
   players = ['solo'];
   playerScores = { solo: 0 };
   roundsPlayed = 0;
@@ -89,6 +91,8 @@ function startParty() {
   document.getElementById('setup').style.display = 'none';
   document.getElementById('game-container').style.display = 'block';
   document.getElementById('view-title').style.display = 'block';
+  document.getElementById('mode-title').style.display = 'none';
+
   startGame();
 }
 
