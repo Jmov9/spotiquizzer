@@ -2,20 +2,25 @@
 <html lang="fi">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css">
   <title>SpotiQuizzer – Valikko</title>
 </head>
 <body>
-  <h1>Tervetuloa!</h1>
-  <p>Valitse mitä haluat tehdä:</p>
-  <button onclick="window.location.href = 'game.html'"> Pelaa peliä</button>
-  <button onclick="goToStats()"> Katso omat statsit</button>
+
+  <main id="wrapper">
+    <div id="menu-container">
+      <h2>Valitse toiminto</h2>
+      <button onclick="window.location.href = 'game.html'">Pelaa peliä</button>
+      <button onclick="goToStats()">Katso omat statsit</button>
+    </div>
+  </main>
 
   <script>
     function goToStats() {
-      // Ohjataan kirjautumissivulle (login.html), joka hoitaa Spotify-kirjautumisen
       window.location.href = 'login.html';
     }
   </script>
+
 </body>
 </html>
