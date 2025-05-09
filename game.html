@@ -21,7 +21,7 @@
   <main id="wrapper">
     <!-- Otsikko, näytetään vain pelin aikana -->
     <h2 id="view-title" style="display: none;">Guess the song?</h2>
-    <h2 id="mode-title">Valitse pelitila</h2>
+    <h2 id="mode-title">Game mode</h2>
 
     <!-- Alkunäkymä -->
     <div id="setup">
@@ -34,13 +34,13 @@
         <div id="player-inputs">
           <input type="text" placeholder="Pelaaja 1">
         </div>
-        <button onclick="addPlayerInput()">Lisää pelaaja</button>
+        <button onclick="addPlayerInput()">Add player</button>
       </div>
 
       <h3>Kierrosten määrä: <span id="roundCountDisplay">5</span></h3>
       <input type="range" id="roundCountInput" min="1" max="10" value="5" />
 
-      <button onclick="startSelectedMode()">Aloita peli</button>
+      <button onclick="startSelectedMode()">Start game</button>
     </div>
 
     <!-- Pelinäkymä -->
