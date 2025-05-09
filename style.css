@@ -22,8 +22,8 @@ html, body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #ECEBF3;
-    color: #0C120C;
+    background-color: #002E2C;
+    color: white;
 }
 main {
   flex: 1;
@@ -57,7 +57,7 @@ button {
 #login-container,
 #stats-container,
 #menu-container {
-  background-color: #ECEBF3;
+  background-color: #2C333A;
   padding: 2em 1em;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
