@@ -2,42 +2,42 @@
 <html lang="fi">
 <head>
   <meta charset="UTF-8" />
+  <title>Spotify stats</title>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <title>Omat Spotify-statistikat</title>
 </head>
 <body>
-  <h1>🎧 Omat top Spotify-statistikat</h1>
-  <div id="profile"></div>
 
-  <h2>Top 10 kappaletta</h2>
-  <ol id="top-tracks"></ol>
+  <main>
+    <h1>My Spotify Stats</h1>
 
-  <h2>Top 10 artistia</h2>
-  <ol id="top-artists"></ol>
+    <div id="profile"></div>
 
-  <label for="timeRange">Ajanjakso:</label>
-  <select id="timeRange">
-    <option value="short_term">Viimeinen kuukausi</option>
-    <option value="medium_term" selected>Viimeiset 6 kuukautta</option>
-    <option value="long_term">Kaikki ajat</option>
-  </select>
+    <h2>Top 10 Songs</h2>
+    <ol id="top-tracks"></ol>
 
-  <br><br>
-  <button onclick="goToMenu()">🏠 Palaa valikkoon</button>
+    <h2>Top 10 Artists</h2>
+    <ol id="top-artists"></ol>
+
+    <label for="timeRange">Range:</label>
+    <select id="timeRange">
+      <option value="short_term">Last month</option>
+      <option value="medium_term" selected>Last 6 months</option>
+      <option value="long_term">Long term</option>
+    </select>
+
+    <br><br>
+    <button onclick="goToMenu()">Back to menu</button>
+  </main>
+
+  <footer>© 2025 SpotiQuizzer. Jmov9.</footer>
 
   <script src="stats.js"></script>
   <script>
     function goToMenu() {
       const token = new URLSearchParams(window.location.search).get('access_token') || localStorage.getItem('access_token');
-      if (token) {
-        window.location.href = `index.html?access_token=${token}`;
-      } else {
-        window.location.href = 'index.html';
-      }
+      window.location.href = token ? `index.html?access_token=${token}` : 'index.html';
     }
   </script>
-    <footer>   © 2025 SpotiQuizzer. Jmov9 . </footer>
 </body>
 </html>
