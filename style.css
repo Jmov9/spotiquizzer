@@ -262,6 +262,7 @@ audio {
   h1 {
     font-size: 1.8em;
     font-weight: bold;
+    margin-top: 2em;
     margin-bottom: 1em;
     text-align: center;
   }
