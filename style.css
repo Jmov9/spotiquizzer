@@ -218,19 +218,28 @@ audio {
 }
 
 #back-button {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  z-index: 999;
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font-size: 1.8rem;
-  line-height: 1;
-  cursor: pointer;
-  color: #FF6668;
-}
+    position: absolute;
+     top: 20px;
+     left: 20px;
+   
+     width: 32px;
+     height: 32px;
+   
+     display: flex;
+     align-items: center;
+     justify-content: center;
+   
+     background-color: #FF6668;
+     color: white;
+     border: none;
+     border-radius: 6px;
+   
+     cursor: pointer;
+     font-size: 18px;
+   
+     color: #FF6668;
+   }
+
 
 .material-symbols-outlined {
   font-size: 1.8rem;
@@ -282,7 +291,7 @@ h1 {
   text-align: center;
 }
 
-@media screen and (min-width: 768px) {
+/*@media screen and (min-width: 768px) {
   #wrapper {
     max-width: 600px;
     margin: 2em auto;
@@ -310,4 +319,4 @@ h1 {
   #roundCountInput {
     width: 50%;
   }
-}
+} */
