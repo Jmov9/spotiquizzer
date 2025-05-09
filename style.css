@@ -252,6 +252,20 @@ audio {
     font-weight: bold;
     margin-bottom: 0.5em;
   }
+
+  #main-logo {
+    width: 120px;
+    margin: 2em auto 1em auto;
+    display: block;
+  }
+  
+  h1 {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-bottom: 1em;
+    text-align: center;
+  }
+  
   #menu-container {
     background-color: #eee;
     padding: 2em 1em;
@@ -259,12 +273,12 @@ audio {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     width: 100%;
     max-width: 500px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 1.5em;
   }
-    
+      
 
 /* Desktop / Tablet */
 @media screen and (min-width: 768px) {
