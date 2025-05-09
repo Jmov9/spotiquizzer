@@ -258,8 +258,8 @@ footer {
 
 @media screen and (max-width: 767px) {
   #back-button {
-    top: 2vh;
-    left: -25vh;
+    top: 2%auto;
+    left: 1%auto;
     transform: none;
   }
 }

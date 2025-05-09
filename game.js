@@ -137,17 +137,17 @@ function handleAnswer(selectedTrack) {
       if (roundsPlayed >= maxRounds) {
         endGame();
       } else {
-        setTimeout(startGame, 1500);
+        setTimeout(startGame, 2500);
       }
     } else {
-      setTimeout(presentQuestion, 1500);
+      setTimeout(presentQuestion, 2500);
     }
   } else {
     roundsPlayed++;
     if (roundsPlayed >= maxRounds) {
       endGame();
     } else {
-      setTimeout(startGame, 1500);
+      setTimeout(startGame, 2500);
     }
   }
 }
