@@ -250,11 +250,12 @@ audio {
 #mode-title {
     font-size: 1.8em;
     font-weight: bold;
+    margin-top: 2em;
     margin-bottom: 0.5em;
   }
 
   #main-logo {
-    width: 140px;
+    width: 180px;
     margin: 2em auto 1em auto;
     display: block;
   }
