@@ -172,7 +172,7 @@ audio {
 }
 
 .answer-option:hover {
-  background-color: #E15557;
+  background-color: #E15557!important;
 }
 
 .answer-option.selected {
