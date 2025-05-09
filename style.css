@@ -233,6 +233,7 @@ audio {
 
   footer {
     margin-top: 3em;
+    margin-bottom: 0em;
     padding: 1em 0;
     font-size: 0.9em;
     color: #555;
