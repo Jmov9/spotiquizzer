@@ -241,10 +241,16 @@ audio {
      
 }
 
+  
+
 
 .material-symbols-outlined {
   font-size: 1.8rem;
 }
+#back-button:hover {
+    background-color: #E15557;
+  }
+  
 
 footer {
   margin-top: 3em;
