@@ -219,11 +219,12 @@ audio {
   /* Tämä media query varmistaa, ettei nappi pomppaa mobiilissa */
   @media screen and (max-width: 767px) {
     #back-button {
-      left: 1rem;
-      top: 1rem;
-      transform: none !important;
+      top: 2vh;
+      left: -20vh;
+      transform: none;
     }
   }
+  
   
   /* Tämä tekee napista suhteessa koko näkymään sijoittuvan */
   body {
