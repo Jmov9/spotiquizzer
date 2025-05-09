@@ -27,8 +27,8 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100dvh;
-  padding: 2em 1em;
+  /*min-height: 100dvh;*/
+  padding: 1em 0.5em;
 }
 
 /* Korttirunko */
