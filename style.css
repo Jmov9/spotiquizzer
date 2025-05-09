@@ -90,7 +90,7 @@ button:hover {
 }
 
 .selected-mode {
-  background-color: #27E18F !important;
+  background-color: #FF6668 !important;
   box-shadow: 0 0 0 2px rgba(39, 225, 143, 0.3);
 }
 
