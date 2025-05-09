@@ -69,6 +69,19 @@ body {
   flex-direction: column;
   gap: 1.5em;
 }
+#login-container {
+    background-color: #eee;
+    padding: 2em 1em;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    width: 90%;
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+  }
+  
 
 /* Nappien perusmuotoilu */
 button {
