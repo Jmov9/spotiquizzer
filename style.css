@@ -117,7 +117,7 @@ button:hover {
   display: block;
   cursor: pointer;
   height: 8px;
-  background: #444; /* taustaviivan väri */
+  background: #002E2C; /* taustaviivan väri */
   border-radius: 20px;
   outline: none;
   -webkit-appearance: none;
