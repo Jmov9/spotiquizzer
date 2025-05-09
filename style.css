@@ -220,7 +220,7 @@ audio {
   @media screen and (max-width: 767px) {
     #back-button {
       top: 2vh;
-      left: -20vh;
+      left: -25vh;
       transform: none;
     }
   }
