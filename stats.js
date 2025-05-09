@@ -28,7 +28,7 @@ async function updateStats() {
   try {
     // Profiilin perustiedot
     const profile = await fetchSpotifyData('me');
-    document.getElementById('profile').innerHTML = `<p>Kirjautunut käyttäjänä: <strong>${profile.display_name}</strong></p>`;
+    document.getElementById('profile').innerHTML = `<p>Logged user: <strong>${profile.display_name}</strong></p>`;
 
     // Top kappaleet
     const topTracks = await fetchSpotifyData(`me/top/tracks?limit=10&time_range=${timeRange}`);
