@@ -123,8 +123,8 @@ function handleAnswer(selectedTrack) {
   }
 
   result.innerText = isCorrect
-    ? "Oikein!"
-    : `Väärin! Oikea oli: ${currentCorrectTrack.title} – ${currentCorrectTrack.artist.name}`;
+    ? "Correct!"
+    : `Wrong! Correct one: ${currentCorrectTrack.title} – ${currentCorrectTrack.artist.name}`;
 
   answeredThisRound.push(name);
 
@@ -164,7 +164,7 @@ function presentQuestion() {
 
   if (localStorage.getItem('mode') === 'party') {
     const playerName = players[currentPlayerIndex];
-    currentPlayerLabel.innerText = `${playerName}, sinun vuoro!`;
+    currentPlayerLabel.innerText = `${playerName}, your turn!`;
   } else {
     currentPlayerLabel.innerText = '';
   }
@@ -245,8 +245,8 @@ function endGame() {
   const winners = sorted.filter(([_, score]) => score === topScore);
 
   const winnerText = winners.length > 1
-    ? `Tasapeli: ${winners.map(w => w[0]).join(' & ')}`
-    : `Voittaja: ${winners[0][0]}`;
+    ? `Draw: ${winners.map(w => w[0]).join(' & ')}`
+    : `Winner: ${winners[0][0]}`;
 
   document.getElementById('winner').innerText = winnerText;
 
