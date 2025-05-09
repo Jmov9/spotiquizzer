@@ -8,19 +8,20 @@ html, body {
     max-width: 100%;
     overflow-x: hidden;
     font-family: 'Montserrat', sans-serif;
-    h1 {
-        font-weight: 700; /* Bold */
-      }
-      
-      p {
-        font-weight: 400; /* Normaali */
-      }
-      
-      button {
-        font-weight: 500; /* Semi-bold, eli napakat napit */
-      }
-      
   }
+  
+  h1 {
+    font-weight: 700;
+  }
+  
+  p {
+    font-weight: 400;
+  }
+  
+  button {
+    font-weight: 500;
+  }
+  
   
 
 body {
