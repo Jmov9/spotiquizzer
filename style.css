@@ -153,7 +153,16 @@ button.selected-mode {
     background: #FF6668;
   }
 
-
+  #roundCountInput::-webkit-slider-thumb:hover {
+    background-color: #E15557;
+  }
+  #roundCountInput::-moz-range-thumb:hover {
+    background-color: #E15557;
+  }
+  #roundCountInput::-webkit-slider-thumb,
+  #roundCountInput::-moz-range-thumb {
+    transition: background-color 0.2s ease;
+  }    
 
 /* Logo ja audio */
 audio {
