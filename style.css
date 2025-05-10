@@ -89,7 +89,7 @@ button:hover {
   background-color: #E15557;
 }
 
-.selected-mode {
+button.selected-mode {
   background-color: #FF6668 !important;
   box-shadow: 0 0 0 2px rgba(39, 225, 143, 0.3);
 }
@@ -144,9 +144,15 @@ button:hover {
   cursor: pointer;
   border: none;
 }
+
 #roundCountInput.selected-mode::-webkit-slider-thumb {
-    background: #FF6668; /* punainen pointeri */
+    background: #FF6668;
   }
+  
+  #roundCountInput.selected-mode::-moz-range-thumb {
+    background: #FF6668;
+  }
+
 
 
 /* Logo ja audio */
