@@ -19,7 +19,7 @@ let selectedMode = null;
 
 roundSlider.addEventListener('input', () => {
   roundDisplay.innerText = roundSlider.value;
-  roundSlider.classList.add('selected-mode');
+  
 });
 
 function getSelectedRoundCount() {
