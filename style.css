@@ -144,6 +144,9 @@ button:hover {
   cursor: pointer;
   border: none;
 }
+#roundCountInput.selected-mode::-webkit-slider-thumb {
+    background: #FF6668; /* punainen pointeri */
+  }
 
 
 /* Logo ja audio */
